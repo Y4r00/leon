@@ -466,5 +466,10 @@ refreshBellUI();updateAgeUI();updateDateLabel();updateBottle(120);
 const now2=new Date();document.getElementById('tripStart').value=pad(now2.getHours())+':'+pad(now2.getMinutes());const later=new Date(now2.getTime()+3*3600000);document.getElementById('tripEnd').value=pad(later.getHours())+':'+pad(later.getMinutes());
 setInterval(updateAgeUI,3600000);
 </script>
+  <div id="errBox" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF6B6B;color:#000;font:12px/1.4 monospace;padding:10px;white-space:pre-wrap;max-height:60vh;overflow:auto"></div>
+<script>
+window.onerror=function(m,src,line,col){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD:\n'+m+'\nlinia: '+line+', kol: '+col;}return false;};
+window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD (promise):\n'+((ev.reason&&ev.reason.message)?ev.reason.message:ev.reason);}});
+</script>
 </body>
 </html>
