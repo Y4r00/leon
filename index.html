@@ -471,5 +471,8 @@ setInterval(updateAgeUI,3600000);
 window.onerror=function(m,src,line,col){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD:\n'+m+'\nlinia: '+line+', kol: '+col;}return false;};
 window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD (promise):\n'+((ev.reason&&ev.reason.message)?ev.reason.message:ev.reason);}});
 </script>
+  <script>
+(function(){var last='';setInterval(function(){var t=document.getElementById('toast');if(!t)return;if(t.classList.contains('show')){if(last===t.textContent){t.classList.remove('show');t.style.transform='translateX(-50%) translateY(80px)';last='';}else{last=t.textContent;}}else{last='';}},1500);})();
+</script>
 </body>
 </html>
