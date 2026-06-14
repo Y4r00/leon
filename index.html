@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="pl">
+<! html>
+<html DOCTYPElang="pl">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#070d1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>Leon</title>
@@ -12,10 +12,9 @@
 <style>
 :root{--bg:#070d1a;--bg2:#0d1930;--bg3:#111e38;--accent:#4A9EFF;--accent2:#7BC4FF;--gold:#FFB347;--gold2:#ffd080;--glass:rgba(255,255,255,0.05);--gb:rgba(255,255,255,0.10);--text:#F0F6FF;--text2:#8BA3C4;--text3:#4A6080;--danger:#FF6B6B;--green:#4FFFB0;--purple:#B57BFF;--safe-bottom:env(safe-area-inset-bottom,0px)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html{height:100%}
-html,body{background:var(--bg);overflow-x:hidden;overscroll-behavior-y:contain}
-body{font-family:'Inter',sans-serif;color:var(--text);min-height:100dvh;padding-bottom:calc(72px + var(--safe-bottom));-webkit-font-smoothing:antialiased}
-.app-header{padding:0 16px;background:linear-gradient(180deg,#0d1930 0%,transparent 100%);position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);padding-top:env(safe-area-inset-top,0px)}
+html{height:auto;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:calc(80px + var(--safe-bottom));-webkit-font-smoothing:antialiased}
+.app-header{padding:0 16px;background:linear-gradient(180deg,#0d1930 0%,rgba(13,25,48,.85) 70%,transparent 100%);position:sticky;top:0;z-index:50;backdrop-filter:blur(20px);padding-top:env(safe-area-inset-top,0px)}
 .header-inner{display:flex;align-items:center;gap:12px;padding:16px 0 12px}
 .avatar{width:46px;height:46px;border-radius:50%;object-fit:cover;border:2px solid var(--accent);box-shadow:0 0 18px rgba(74,158,255,0.45);flex-shrink:0}
 .header-text{flex:1;min-width:0}
@@ -27,7 +26,7 @@ body{font-family:'Inter',sans-serif;color:var(--text);min-height:100dvh;padding-
 .bell-btn.on{background:rgba(79,255,176,.12);border-color:rgba(79,255,176,.4);color:var(--green)}
 .bell-btn.on::after{content:'';position:absolute;top:7px;right:8px;width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green)}
 .bell-btn:active{transform:scale(.92)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(7,13,26,0.92);backdrop-filter:blur(24px);border-top:1px solid var(--gb);display:flex;z-index:100;padding-bottom:var(--safe-bottom)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:rgba(7,13,26,0.95);backdrop-filter:blur(24px);border-top:1px solid var(--gb);display:flex;z-index:100;padding-bottom:var(--safe-bottom)}
 .nav-item{flex:1;padding:9px 0 7px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .2s;border:none;background:none;color:var(--text3);font-family:'Inter',sans-serif;min-height:44px;position:relative}
 .nav-item.active{color:var(--accent)}
 .nav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:3px;border-radius:0 0 4px 4px;background:var(--accent);box-shadow:0 0 10px var(--accent)}
@@ -35,9 +34,8 @@ body{font-family:'Inter',sans-serif;color:var(--text);min-height:100dvh;padding-
 .nav-item.active .nav-icon{transform:translateY(-1px) scale(1.08)}
 .nav-icon svg{width:100%;height:100%;display:block}
 .nav-label{font-size:.55rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.pages-wrap{overflow:hidden;width:100%;touch-action:pan-y}
-.pages-track{display:flex;transition:transform .38s cubic-bezier(.77,0,.18,1);will-change:transform}
-.page{min-width:100vw;width:100vw;padding-bottom:8px}
+.page{display:none;padding-bottom:8px}
+.page.active{display:block}
 .sec{font-size:.6rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.14em;padding:0 16px;margin:16px 0 8px;display:flex;align-items:center;gap:8px}
 .sec::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--gb),transparent)}
 .sec .sec-emo{font-size:.85rem}
@@ -321,8 +319,7 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 <div class="header-text"><h1>Karmienie Leona</h1><p id="headerDate">Ładowanie…</p><span class="age-badge" id="ageBadge">obliczam wiek…</span></div>
 <button class="bell-btn" id="bellBtn" onclick="toggleReminders()" aria-label="Przypomnienia"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6c0 4-1.5 5.5-2 6.2-.3.5 0 1.3.7 1.3h14.6c.7 0 1-.8.7-1.3-.5-.7-2-2.2-2-6.2a6 6 0 0 0-6-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 </div></div>
-<div class="pages-wrap" id="pagesWrap"><div class="pages-track" id="pagesTrack">
-<div class="page" id="page0">
+<div id="page0" class="page active">
 <div class="alarm-banner" id="alarmBanner"><div class="alarm-emo">🔔</div><div class="alarm-body"><div class="alarm-title">Czas na karmienie Leona!</div><div class="alarm-sub" id="alarmSub">Minęła przewidywana pora</div></div><button class="alarm-x" onclick="dismissAlarm()">OK ✓</button></div>
 <div class="hero"><div class="ring-wrap"><div class="rpulse"></div><svg width="148" height="148" viewBox="0 0 148 148"><circle class="rtrack" cx="74" cy="74" r="65"/><circle class="rfill" id="ringFill" cx="74" cy="74" r="65"/></svg><div class="rc"><span class="rtime" id="liveTimer">--:--:--</span><span class="rlabel">od ostatniego</span></div></div>
 <div class="stats-row"><div class="stat-p"><span class="sv" id="statToday">-- ml</span><span class="sl">Dziś łącznie</span></div><div class="stat-p"><span class="sv" id="statCount">--</span><span class="sl">Posiłków dziś</span></div><div class="stat-p"><span class="sv" id="statAvg">--h</span><span class="sl">Śr. przerwa</span></div></div></div>
@@ -353,7 +350,7 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 <div class="dnav"><button class="abtn" onclick="changeDate(-1)" aria-label="Poprzedni">‹</button><span class="dlabel" id="dateLabel">Dzisiaj</span><button class="abtn" onclick="changeDate(1)" aria-label="Następny">›</button></div>
 <div class="cw"><canvas id="mainChart"></canvas></div></div>
 </div>
-<div class="page" id="page1">
+<div id="page1" class="page">
 <div class="sec" style="margin-top:8px"><span class="sec-emo">👶</span>Normy dla wieku Leona</div>
 <div class="norm-card"><div class="norm-head"><span class="norm-emo">🎂</span><div><div class="norm-title" id="normTitle">Leon ma …</div><div class="norm-stage" id="normStage">—</div></div></div>
 <div class="norm-grid"><div class="norm-item"><span class="norm-ico">💤</span><span class="norm-val" id="normSleep">—</span><span class="norm-lbl">Sen / dobę</span></div><div class="norm-item"><span class="norm-ico">😴</span><span class="norm-val" id="normNaps">—</span><span class="norm-lbl">Drzemki w dzień</span></div><div class="norm-item"><span class="norm-ico">🌟</span><span class="norm-val" id="normAwake">—</span><span class="norm-lbl">Okno aktywności</span></div><div class="norm-item"><span class="norm-ico">🍼</span><span class="norm-val" id="normFeeds">—</span><span class="norm-lbl">Karmień / dobę</span></div><div class="norm-item"><span class="norm-ico">🥛</span><span class="norm-val" id="normPortion">—</span><span class="norm-lbl">Porcja</span></div><div class="norm-item"><span class="norm-ico">📅</span><span class="norm-val" id="normNext">—</span><span class="norm-lbl">Następny etap</span></div></div>
@@ -370,7 +367,7 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 <div class="ivscroll" id="ivScroll"><div class="empty" style="padding:8px 0;min-width:160px">Brak danych</div></div>
 <div style="height:8px"></div>
 </div>
-<div class="page" id="page2">
+<div id="page2" class="page">
 <div class="sec" style="margin-top:8px"><span class="sec-emo">🍼</span>Dodaj karmienie</div>
 <div class="input-card"><div class="bottle-sec"><svg class="bottle-svg" viewBox="0 0 70 130" fill="none" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="bClip"><path d="M22 30 Q20 38 14 50 L14 118 Q14 126 21 126 L49 126 Q56 126 56 118 L56 50 Q50 38 48 30 Z"/></clipPath><linearGradient id="liqGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#4A9EFF" stop-opacity=".9"/><stop offset="50%" stop-color="#7BC4FF" stop-opacity=".95"/><stop offset="100%" stop-color="#4A9EFF" stop-opacity=".9"/></linearGradient><linearGradient id="bGloss" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="rgba(255,255,255,.02)"/><stop offset="30%" stop-color="rgba(255,255,255,.12)"/><stop offset="50%" stop-color="rgba(255,255,255,.02)"/><stop offset="100%" stop-color="rgba(255,255,255,0)"/></linearGradient></defs>
 <path d="M31 2 Q31 0 35 0 Q39 0 39 2 L38 8 Q38 12 35 14 Q32 12 32 8 Z" fill="#f0c080" stroke="#c8904a" stroke-width="1"/><rect x="25" y="14" width="20" height="7" rx="2" fill="#c0c8d4" stroke="#9098a8" stroke-width="1"/><path d="M22 30 Q20 38 14 50 L14 118 Q14 126 21 126 L49 126 Q56 126 56 118 L56 50 Q50 38 48 30 Z" fill="#0d1930" stroke="#2a3a58" stroke-width="1.5"/><g clip-path="url(#bClip)"><rect id="bLiq" x="14" y="126" width="42" height="0" fill="url(#liqGrad)" style="transition:y .45s cubic-bezier(.4,0,.2,1),height .45s cubic-bezier(.4,0,.2,1)"/><path id="bWave" d="M14 126 Q21 124 28 126 Q35 128 42 126 Q49 124 56 126 L56 130 L14 130 Z" fill="#7BC4FF" opacity=".5" style="transition:transform .45s cubic-bezier(.4,0,.2,1)"/></g><path d="M22 30 Q20 38 14 50 L14 118 Q14 126 21 126 L49 126 Q56 126 56 118 L56 50 Q50 38 48 30 Z" fill="url(#bGloss)"/><line x1="16" y1="80" x2="22" y2="80" stroke="#2a3a58" stroke-width="1"/><line x1="16" y1="95" x2="22" y2="95" stroke="#2a3a58" stroke-width="1"/><line x1="16" y1="110" x2="22" y2="110" stroke="#2a3a58" stroke-width="1"/><path d="M26 21 L24 30 L46 30 L44 21 Z" fill="#161e30" stroke="#2a3a58" stroke-width="1"/></svg>
@@ -382,7 +379,6 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 <div class="sec" style="margin-top:16px"><span class="sec-emo">📋</span>Historia</div>
 <div class="hlist" id="history"></div>
 </div>
-</div></div>
 <nav class="bottom-nav">
 <button class="nav-item active" id="nav0" onclick="goPage(0)" aria-label="Pulpit"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2.2" stroke="currentColor" stroke-width="2"/><rect x="13" y="3" width="8" height="5" rx="2.2" stroke="currentColor" stroke-width="2"/><rect x="13" y="10" width="8" height="11" rx="2.2" stroke="currentColor" stroke-width="2"/><rect x="3" y="13" width="8" height="8" rx="2.2" stroke="currentColor" stroke-width="2"/></svg></span><span class="nav-label">Pulpit</span></button>
 <button class="nav-item" id="nav1" onclick="goPage(1)" aria-label="Planer"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3 9h18" stroke="currentColor" stroke-width="2"/><path d="M8 2.5v4M16 2.5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8.5" cy="13.5" r="1.4" fill="currentColor"/><circle cx="12" cy="13.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="13.5" r="1.4" fill="currentColor"/></svg></span><span class="nav-label">Planer</span></button>
@@ -416,13 +412,7 @@ function fmtAge(){const{days,weeks,months}=ageData();if(days<14)return`${days} d
 function updateAgeUI(){const{weeks,months,days}=ageData();const badge=document.getElementById('ageBadge');if(badge)badge.textContent='🎂 '+fmtAge();const st=currentStage();const tEl=document.getElementById('normTitle');if(tEl){let label=days<14?`${days} dni`:(months<1?`${weeks} tygodni`:`${months} mies. (${weeks} tyg.)`);tEl.textContent=`Leon ma ${label}`;document.getElementById('normStage').textContent='Etap: '+st.stage;document.getElementById('normSleep').textContent=st.sleep;document.getElementById('normNaps').textContent=st.naps;document.getElementById('normAwake').textContent=st.awake;document.getElementById('normFeeds').textContent=st.feeds;document.getElementById('normPortion').textContent=st.portion;const toNext=st.nextW-weeks;document.getElementById('normNext').textContent=st.nextW>=999?'—':(toNext<=0?'wkrótce':`za ~${toNext} tyg`);}updateDietUI();updateSleepUI();}
 document.getElementById('headerDate').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
 document.getElementById('tlDate').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
-const track=document.getElementById('pagesTrack'),pw=document.getElementById('pagesWrap');
-let touchStartX=0,touchStartY=0,isDragging=false,lockedAxis=null,startOffset=0;
-window.goPage=(idx)=>{currentPage=idx;track.style.transition='transform .38s cubic-bezier(.77,0,.18,1)';track.style.transform=`translateX(-${idx*100}vw)`;document.querySelectorAll('.nav-item').forEach((b,i)=>b.classList.toggle('active',i===idx));haptic(8);if(idx===1){renderTimeline();renderNapWindows();renderIntervals();updateDietUI();}};
-pw.addEventListener('touchstart',e=>{touchStartX=e.touches[0].clientX;touchStartY=e.touches[0].clientY;startOffset=currentPage*window.innerWidth;isDragging=false;lockedAxis=null;},{passive:true});
-pw.addEventListener('touchmove',e=>{const dx=e.touches[0].clientX-touchStartX,dy=e.touches[0].clientY-touchStartY;if(lockedAxis===null&&(Math.abs(dx)>8||Math.abs(dy)>8))lockedAxis=Math.abs(dx)>Math.abs(dy)?'x':'y';if(lockedAxis!=='x')return;isDragging=true;let newX=startOffset-dx;const max=2*window.innerWidth;if(newX<0)newX=newX*0.35;else if(newX>max)newX=max+(newX-max)*0.35;track.style.transition='none';track.style.transform=`translateX(-${newX}px)`;},{passive:true});
-pw.addEventListener('touchend',e=>{if(!isDragging)return;const dx=e.changedTouches[0].clientX-touchStartX,threshold=window.innerWidth*0.22;if(dx<-threshold&&currentPage<2)goPage(currentPage+1);else if(dx>threshold&&currentPage>0)goPage(currentPage-1);else goPage(currentPage);isDragging=false;lockedAxis=null;},{passive:true});
-window.addEventListener('resize',()=>{track.style.transition='none';track.style.transform=`translateX(-${currentPage*100}vw)`;});
+window.goPage=(idx)=>{currentPage=idx;document.querySelectorAll('.page').forEach((p,i)=>p.classList.toggle('active',i===idx));document.querySelectorAll('.nav-item').forEach((b,i)=>b.classList.toggle('active',i===idx));window.scrollTo(0,0);haptic(8);if(idx===1){renderTimeline();renderNapWindows();renderIntervals();updateDietUI();}};
 function updateBottle(val){const pct=val/330,fillH=Math.round(pct*96),yPos=126-fillH;document.getElementById('bLiq').setAttribute('y',yPos);document.getElementById('bLiq').setAttribute('height',fillH+2);document.getElementById('bWave').setAttribute('transform',`translate(0,${yPos-126})`);document.getElementById('mlVal').textContent=val;}
 window.updateMl=v=>{updateBottle(parseInt(v));document.querySelectorAll('.pbtn').forEach(b=>b.classList.remove('sel'));};
 window.setPreset=v=>{document.getElementById('mlRange').value=v;updateBottle(v);haptic(6);document.querySelectorAll('.pbtn').forEach(b=>b.classList.toggle('sel',parseInt(b.textContent)===v));};
