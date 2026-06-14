@@ -1,5 +1,5 @@
-<! html>
-<html DOCTYPElang="pl">
+<!DOCTYPE html>
+<html lang="pl">
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -307,17 +307,17 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 .lii{font-size:.6rem;color:var(--text3);margin-top:2px;font-weight:500}
 .dbtn{background:none;border:none;color:var(--text3);font-size:.85rem;cursor:pointer;padding:6px;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center}
 .dbtn:active{background:rgba(255,107,107,.15);color:var(--danger)}
-.toast{position:fixed;bottom:calc(80px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#000;font-weight:800;padding:11px 22px;border-radius:18px;font-size:.82rem;box-shadow:0 8px 28px rgba(79,255,176,.3);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;pointer-events:none}
-.toast.show{transform:translateX(-50%) translateY(0)}
+.toast{position:fixed;bottom:calc(80px + var(--safe-bottom));left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#000;font-weight:800;padding:11px 22px;border-radius:18px;font-size:.82rem;box-shadow:0 8px 28px rgba(79,255,176,.3);transition:transform .4s cubic-bezier(.34,1.56,.64,1);z-index:999;white-space:nowrap;pointer-events:none;opacity:0}
+.toast.show{transform:translateX(-50%) translateY(0);opacity:1}
 .empty{text-align:center;padding:28px 20px;color:var(--text3);font-size:.8rem}
 .empty .emo{font-size:1.7rem;margin-bottom:8px}
 </style>
 </head>
 <body>
-  <div id="errBox" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF6B6B;color:#000;font:12px/1.5 monospace;padding:12px;white-space:pre-wrap;max-height:60vh;overflow:auto;display:none"></div>
+<div id="errBox" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF6B6B;color:#000;font:11px/1.4 monospace;padding:10px;white-space:pre-wrap;max-height:55vh;overflow:auto"></div>
 <script>
-window.onerror=function(m,s,l,c,e){var b=document.getElementById('errBox');b.style.display='block';b.textContent='BŁĄD: '+m+'\nlinia '+l+'\n'+(e&&e.stack?e.stack:'');};
-window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');b.style.display='block';b.textContent='PROMISE: '+(ev.reason&&ev.reason.message?ev.reason.message:ev.reason);});
+window.onerror=function(m,s,l,c,e){var b=document.getElementById('errBox');if(!b)return;b.style.display='block';b.textContent='BLAD JS:\n'+m+'\nlinia: '+l+', kol: '+c+'\n'+(e&&e.stack?e.stack:'');return false;};
+window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');if(!b)return;b.style.display='block';b.textContent='BLAD (promise):\n'+(ev.reason&&ev.reason.message?ev.reason.message:ev.reason)+'\n'+(ev.reason&&ev.reason.stack?ev.reason.stack:'');});
 </script>
 <div class="app-header"><div class="header-inner">
 <img src="https://i.postimg.cc/KcnF32JW/20260217-133909.jpg" alt="Leon" class="avatar">
@@ -389,7 +389,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
 <button class="nav-item" id="nav1" onclick="goPage(1)" aria-label="Planer"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4.5" width="18" height="16" rx="3" stroke="currentColor" stroke-width="2"/><path d="M3 9h18" stroke="currentColor" stroke-width="2"/><path d="M8 2.5v4M16 2.5v4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="8.5" cy="13.5" r="1.4" fill="currentColor"/><circle cx="12" cy="13.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="13.5" r="1.4" fill="currentColor"/></svg></span><span class="nav-label">Planer</span></button>
 <button class="nav-item" id="nav2" onclick="goPage(2)" aria-label="Dodaj"><span class="nav-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M9 7.5l1-2.2 4 1.4-1 2.2" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8.2 9.2C7.2 11 6.5 12 6.5 15v3.5A2.5 2.5 0 0 0 9 21h4a2.5 2.5 0 0 0 2.5-2.5V15c0-3-.7-4-1.7-5.8l-5.6 0Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 13h4M9 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M18.5 4.5v4M16.5 6.5h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span><span class="nav-label">Dodaj</span></button>
 </nav>
-<div class="toast" id="toast">✓ Zapisano!</div>
+<div class="toast" id="toast" style="display:none">✓ Zapisano!</div>
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
@@ -423,14 +423,14 @@ window.updateMl=v=>{updateBottle(parseInt(v));document.querySelectorAll('.pbtn')
 window.setPreset=v=>{document.getElementById('mlRange').value=v;updateBottle(v);haptic(6);document.querySelectorAll('.pbtn').forEach(b=>b.classList.toggle('sel',parseInt(b.textContent)===v));};
 const updateTimeSug=()=>{if(!userEditedTime){const n=new Date();document.getElementById('timeInput').value=pad(n.getHours())+':'+pad(n.getMinutes());}};
 setInterval(updateTimeSug,30000);updateTimeSug();
-window.saveData=async()=>{const tv=document.getElementById('timeInput').value;if(!tv){alert('Ustaw godzinę');return;}const[h,m]=tv.split(':');const d=new Date();d.setHours(parseInt(h),parseInt(m),0,0);haptic([10,40,10]);await addDoc(colRef,{type:'karmienie',mode:'butelka',ml:parseInt(document.getElementById('mlRange').value),time:tv,eventTS:d.getTime(),date:d.toLocaleDateString('pl-PL'),hour:d.getHours()});userEditedTime=false;updateTimeSug();showToast('✓ Zapisano!');};
-window.del=async id=>{if(confirm('Usunąć ten wpis?')){haptic(15);await deleteDoc(doc(db,'feedings',id));}};
-window.delSleep=async id=>{if(confirm('Usunąć ten sen?')){haptic(15);await deleteDoc(doc(db,'sleeps',id));}};
+window.saveData=async()=>{const tv=document.getElementById('timeInput').value;if(!tv){alert('Ustaw godzinę');return;}const[h,m]=tv.split(':');const d=new Date();d.setHours(parseInt(h),parseInt(m),0,0);haptic([10,40,10]);try{await addDoc(colRef,{type:'karmienie',mode:'butelka',ml:parseInt(document.getElementById('mlRange').value),time:tv,eventTS:d.getTime(),date:d.toLocaleDateString('pl-PL'),hour:d.getHours()});userEditedTime=false;updateTimeSug();showToast('✓ Zapisano!');}catch(e){showToast('⚠️ Błąd zapisu');}};
+window.del=async id=>{if(confirm('Usunąć ten wpis?')){haptic(15);try{await deleteDoc(doc(db,'feedings',id));}catch(e){showToast('⚠️ Błąd');}}};
+window.delSleep=async id=>{if(confirm('Usunąć ten sen?')){haptic(15);try{await deleteDoc(doc(db,'sleeps',id));}catch(e){showToast('⚠️ Błąd');}}};
 let toastTimer=null;
-function showToast(msg){const t=document.getElementById('toast');if(!t)return;if(msg)t.textContent=msg;t.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.classList.remove('show');},2000);}
+function showToast(msg){const t=document.getElementById('toast');if(!t)return;t.style.display='block';if(msg)t.textContent=msg;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.classList.remove('show');setTimeout(()=>{if(!t.classList.contains('show'))t.style.display='none';},500);},1800);}
 window.editGoal=()=>{const v=prompt('Ustaw dzienny cel mleka (ml):',dailyGoal);if(v===null)return;const n=parseInt(v);if(isNaN(n)||n<=0){alert('Podaj poprawną liczbę');return;}dailyGoal=n;localStorage.setItem('leonGoal',n);updateGoal();updateInsights();updateSparkline();};
 function updateGoal(){const sum=dailySum(todayKey());const pct=Math.min(Math.round(sum/dailyGoal*100),100);document.getElementById('goalCurrent').textContent=sum;document.getElementById('goalTarget').textContent=dailyGoal;document.getElementById('goalPct').textContent=pct+'%';document.getElementById('goalFill').style.width=pct+'%';const remain=dailyGoal-sum;document.getElementById('goalRemain').textContent=remain>0?`Brakuje ${remain} ml`:`🎉 Cel osiągnięty! (+${Math.abs(remain)} ml)`;}
-window.toggleSleep=async()=>{haptic(12);if(activeSleepStart){const start=activeSleepStart,end=Date.now(),dur=end-start;activeSleepStart=null;if(dur<60000){if(activeSleepId){try{await deleteDoc(doc(db,'sleeps',activeSleepId));}catch(e){}}activeSleepId=null;showToast('Anulowano (za krótko)');refreshSleepBtn();return;}if(activeSleepId){try{await deleteDoc(doc(db,'sleeps',activeSleepId));}catch(e){}activeSleepId=null;}const d=new Date(start);await addDoc(sleepColRef,{type:'sen',startTS:start,endTS:end,durMin:Math.round(dur/60000),date:d.toLocaleDateString('pl-PL'),open:false});showToast('💤 Sen zapisany: '+fmtDur(dur));}else{activeSleepStart=Date.now();const d=new Date(activeSleepStart);const ref=await addDoc(sleepColRef,{type:'sen',startTS:activeSleepStart,endTS:null,durMin:0,date:d.toLocaleDateString('pl-PL'),open:true});activeSleepId=ref.id;showToast('😴 Liczę sen…');}refreshSleepBtn();};
+window.toggleSleep=async()=>{haptic(12);if(activeSleepStart){const start=activeSleepStart,end=Date.now(),dur=end-start;activeSleepStart=null;if(dur<60000){if(activeSleepId){try{await deleteDoc(doc(db,'sleeps',activeSleepId));}catch(e){}}activeSleepId=null;showToast('Anulowano (za krótko)');refreshSleepBtn();return;}if(activeSleepId){try{await deleteDoc(doc(db,'sleeps',activeSleepId));}catch(e){}activeSleepId=null;}const d=new Date(start);try{await addDoc(sleepColRef,{type:'sen',startTS:start,endTS:end,durMin:Math.round(dur/60000),date:d.toLocaleDateString('pl-PL'),open:false});showToast('💤 Sen zapisany: '+fmtDur(dur));}catch(e){showToast('⚠️ Błąd zapisu');}}else{activeSleepStart=Date.now();const d=new Date(activeSleepStart);try{const ref=await addDoc(sleepColRef,{type:'sen',startTS:activeSleepStart,endTS:null,durMin:0,date:d.toLocaleDateString('pl-PL'),open:true});activeSleepId=ref.id;showToast('😴 Liczę sen…');}catch(e){showToast('⚠️ Błąd zapisu');}}refreshSleepBtn();};
 function refreshSleepBtn(){const btn=document.getElementById('sleepBtn'),live=document.getElementById('sleepLive');if(!btn)return;if(activeSleepStart){btn.className='sleep-btn stop';btn.textContent='☀️ Leon się obudził';live.classList.add('show');document.getElementById('sleepSince').textContent=fmtTime(activeSleepStart);}else{btn.className='sleep-btn start';btn.textContent='😴 Leon zasnął';live.classList.remove('show');}}
 setInterval(()=>{if(activeSleepStart){const el=document.getElementById('sleepElapsed');if(el)el.textContent=fmtDur(Date.now()-activeSleepStart);}},1000);
 function todaySleepMin(){const tk=todayKey();let total=sleepData.filter(s=>s.date===tk&&!s.open&&s.durMin).reduce((a,s)=>a+s.durMin,0);if(activeSleepStart&&new Date(activeSleepStart).toLocaleDateString('pl-PL')===tk)total+=Math.round((Date.now()-activeSleepStart)/60000);return total;}
@@ -471,13 +471,8 @@ refreshBellUI();updateAgeUI();updateDateLabel();updateBottle(120);
 const now2=new Date();document.getElementById('tripStart').value=pad(now2.getHours())+':'+pad(now2.getMinutes());const later=new Date(now2.getTime()+3*3600000);document.getElementById('tripEnd').value=pad(later.getHours())+':'+pad(later.getMinutes());
 setInterval(updateAgeUI,3600000);
 </script>
-  <div id="errBox" style="display:none;position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF6B6B;color:#000;font:12px/1.4 monospace;padding:10px;white-space:pre-wrap;max-height:60vh;overflow:auto"></div>
 <script>
-window.onerror=function(m,src,line,col){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD:\n'+m+'\nlinia: '+line+', kol: '+col;}return false;};
-window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');if(b){b.style.display='block';b.textContent='❌ BŁĄD (promise):\n'+((ev.reason&&ev.reason.message)?ev.reason.message:ev.reason);}});
-</script>
-  <script>
-(function(){var last='';setInterval(function(){var t=document.getElementById('toast');if(!t)return;if(t.classList.contains('show')){if(last===t.textContent){t.classList.remove('show');t.style.transform='translateX(-50%) translateY(80px)';last='';}else{last=t.textContent;}}else{last='';}},1500);})();
+(function(){var t=document.getElementById('toast');if(t){t.classList.remove('show');t.style.display='none';}var last='';setInterval(function(){var el=document.getElementById('toast');if(!el)return;if(el.classList.contains('show')){if(last===el.textContent){el.classList.remove('show');el.style.display='none';last='';}else{last=el.textContent;}}else{last='';}},1500);})();
 </script>
 </body>
 </html>
