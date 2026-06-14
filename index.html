@@ -314,6 +314,11 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 </style>
 </head>
 <body>
+  <div id="errBox" style="position:fixed;top:0;left:0;right:0;z-index:99999;background:#FF6B6B;color:#000;font:12px/1.5 monospace;padding:12px;white-space:pre-wrap;max-height:60vh;overflow:auto;display:none"></div>
+<script>
+window.onerror=function(m,s,l,c,e){var b=document.getElementById('errBox');b.style.display='block';b.textContent='BŁĄD: '+m+'\nlinia '+l+'\n'+(e&&e.stack?e.stack:'');};
+window.addEventListener('unhandledrejection',function(ev){var b=document.getElementById('errBox');b.style.display='block';b.textContent='PROMISE: '+(ev.reason&&ev.reason.message?ev.reason.message:ev.reason);});
+</script>
 <div class="app-header"><div class="header-inner">
 <img src="https://i.postimg.cc/KcnF32JW/20260217-133909.jpg" alt="Leon" class="avatar">
 <div class="header-text"><h1>Karmienie Leona</h1><p id="headerDate">Ładowanie…</p><span class="age-badge" id="ageBadge">obliczam wiek…</span></div>
