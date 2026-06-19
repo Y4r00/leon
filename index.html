@@ -421,10 +421,6 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
       <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1Z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"/><path fill="#FBBC05" d="M5.84 14.1a6.6 6.6 0 0 1 0-4.2V7.06H2.18a11 11 0 0 0 0 9.88l3.66-2.84Z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38Z"/></svg>
       Kontynuuj z Google
     </button>
-    <button class="auth-btn fb" id="btnFb">
-      <svg viewBox="0 0 24 24" fill="#fff"><path d="M24 12a12 12 0 1 0-13.88 11.85v-8.38H7.08V12h3.04V9.36c0-3 1.79-4.67 4.53-4.67 1.31 0 2.68.24 2.68.24v2.95h-1.51c-1.49 0-1.95.92-1.95 1.87V12h3.32l-.53 3.47h-2.79v8.38A12 12 0 0 0 24 12Z"/></svg>
-      Kontynuuj z Facebook
-    </button>
     <div class="auth-divider">lub e-mailem</div>
     <div class="auth-field"><label>E-mail</label><input class="auth-input" id="authEmail" type="email" autocomplete="email" placeholder="twoj@email.pl"></div>
     <div class="auth-field"><label>Hasło</label><input class="auth-input" id="authPass" type="password" autocomplete="current-password" placeholder="min. 6 znaków"></div>
@@ -451,6 +447,9 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
       </div>
     </div>
     <button class="auth-btn primary" id="btnOnbSave" style="margin-top:6px">Zaczynamy! 🎉</button>
+    <div class="auth-divider">albo dołącz do drugiego rodzica</div>
+    <div class="auth-field"><label>Kod zaproszenia</label><input class="auth-input" id="onbJoinCode" type="text" placeholder="Wklej kod od mamy/taty" autocomplete="off"></div>
+    <button class="auth-btn" id="btnOnbJoin" style="background:rgba(79,255,176,.12);border:1px solid rgba(79,255,176,.35);color:var(--green)">👪 Dołącz do rodziny</button>
   </div>
 </div>
 
@@ -600,6 +599,15 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <div class="auth-field"><label>Data urodzenia</label><input class="auth-input" id="setDob" type="date"></div>
     <div class="auth-field"><label>Płeć</label><div class="gender-row" id="setGender"><div class="gender-opt boy" data-g="boy"><span class="ge">👦</span>Chłopiec</div><div class="gender-opt girl" data-g="girl"><span class="ge">👧</span>Dziewczynka</div><div class="gender-opt other" data-g="other"><span class="ge">🍼</span>—</div></div></div>
     <button class="auth-btn primary" id="setSaveBtn" style="margin-bottom:10px">💾 Zapisz zmiany</button>
+    <div class="ai-divider"></div>
+    <div class="ai-chat-head">👪 Wspólne zarządzanie</div>
+    <div style="font-size:.66rem;color:var(--text2);line-height:1.5;margin-bottom:10px" id="membersInfo">👤 Na razie tylko Ty zarządzasz</div>
+    <div class="auth-field"><label>Twój kod zaproszenia (pokaż drugiemu rodzicowi)</label><div style="display:flex;gap:8px"><input class="auth-input" id="inviteCode" type="text" readonly style="flex:1;font-size:.74rem;letter-spacing:.02em"><button class="auth-btn" id="copyInviteBtn" style="width:auto;padding:0 16px;background:rgba(74,158,255,.16);border:1px solid rgba(74,158,255,.4);color:var(--accent2)">📋</button></div></div>
+    <div style="font-size:.58rem;color:var(--text3);line-height:1.5;margin:-4px 0 14px">Drugi rodzic zakłada własne konto, a podczas logowania wkleja ten kod, aby dołączyć do Twojego dziecka.</div>
+    <div class="auth-err" id="setJoinErr"></div>
+    <div class="auth-field"><label>Masz kod od drugiego rodzica?</label><input class="auth-input" id="joinCode" type="text" placeholder="Wklej kod, aby dołączyć" autocomplete="off"></div>
+    <button class="auth-btn" id="btnJoin" style="background:rgba(79,255,176,.12);border:1px solid rgba(79,255,176,.35);color:var(--green);margin-bottom:14px">👪 Dołącz do innej rodziny</button>
+    <div class="ai-divider"></div>
     <button class="auth-btn" id="logoutBtn" style="background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.35);color:#ffb3b3">🚪 Wyloguj się</button>
     <div style="font-size:.6rem;color:var(--text3);text-align:center;margin-top:14px" id="setAccount"></div>
   </div></div>
@@ -609,14 +617,14 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, FacebookAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const fb=initializeApp({apiKey:"AIzaSyCSzIdPQrHsk2iEXF3KiIWHgdhUayDWv9Y",authDomain:"karminie-leona.firebaseapp.com",projectId:"karminie-leona",storageBucket:"karminie-leona.firebasestorage.app",messagingSenderId:"152127047962",appId:"1:152127047962:web:efcf39bbc44f98fa57c4a3"});
 const db=getFirestore(fb), auth=getAuth(fb);
 
 /* ===== STATE ===== */
-let uid=null,profile=null,unsubFeed=null,unsubSleep=null;
+let uid=null,profile=null,familyId=null,unsubFeed=null,unsubSleep=null,unsubFamily=null;
 let globalData=[],sleepData=[],mainChart=null,sparkChart=null,chartType='hour',viewDate=new Date();
 let avgIntervalMs=0,avgDayMs=0,avgNightMs=0,lastEventTS=0;
 let dailyGoal=700;
@@ -632,8 +640,9 @@ const todayKey=()=>new Date().toLocaleDateString('pl-PL');
 const dailySum=ds=>globalData.filter(f=>f.date===ds).reduce((s,c)=>s+c.ml,0);
 function haptic(ms){if(navigator.vibrate)try{navigator.vibrate(ms);}catch(e){}}
 const $=id=>document.getElementById(id);
-function feedCol(){return collection(db,'users',uid,'feedings');}
-function sleepCol(){return collection(db,'users',uid,'sleeps');}
+function familyRef(){return doc(db,'families',familyId);}
+function feedCol(){return collection(db,'families',familyId,'feedings');}
+function sleepCol(){return collection(db,'families',familyId,'sleeps');}
 
 /* ===== AGE ===== */
 function birthDate(){return profile&&profile.birthDate?new Date(profile.birthDate):new Date(2026,1,12);}
@@ -655,20 +664,23 @@ $('btnSwitch').onclick=()=>{signupMode=!signupMode;clearAuthErr($('authErr'));$(
 $('btnEmail').onclick=async()=>{const email=$('authEmail').value.trim(),pass=$('authPass').value;clearAuthErr($('authErr'));if(!email||!pass){showAuthErr($('authErr'),'Podaj e-mail i hasło.');return;}$('btnEmail').disabled=true;try{if(signupMode)await createUserWithEmailAndPassword(auth,email,pass);else await signInWithEmailAndPassword(auth,email,pass);}catch(e){showAuthErr($('authErr'),mapAuthErr(e));}finally{$('btnEmail').disabled=false;}};
 async function providerLogin(provider){clearAuthErr($('authErr'));try{await signInWithPopup(auth,provider);}catch(e){if((e.code||'').includes('popup')){try{await signInWithRedirect(auth,provider);}catch(e2){showAuthErr($('authErr'),mapAuthErr(e2));}}else showAuthErr($('authErr'),mapAuthErr(e));}}
 $('btnGoogle').onclick=()=>providerLogin(new GoogleAuthProvider());
-$('btnFb').onclick=()=>providerLogin(new FacebookAuthProvider());
 getRedirectResult(auth).catch(e=>showAuthErr($('authErr'),mapAuthErr(e)));
 
 /* ===== ONBOARDING ===== */
 document.querySelectorAll('#onbGender .gender-opt').forEach(o=>o.onclick=()=>{onbGender=o.dataset.g;document.querySelectorAll('#onbGender .gender-opt').forEach(x=>x.classList.toggle('sel',x===o));});
 document.querySelector('#onbGender .gender-opt.boy').classList.add('sel');
-$('btnOnbSave').onclick=async()=>{const name=$('onbName').value.trim(),dob=$('onbDob').value;clearAuthErr($('onbErr'));if(!name){showAuthErr($('onbErr'),'Podaj imię dziecka.');return;}if(!dob){showAuthErr($('onbErr'),'Podaj datę urodzenia.');return;}const d=new Date(dob);if(isNaN(d)||d>new Date()){showAuthErr($('onbErr'),'Nieprawidłowa data urodzenia.');return;}$('btnOnbSave').disabled=true;try{const data={childName:name,birthDate:dob,gender:onbGender,dailyGoal:700,createdAt:serverTimestamp()};await setDoc(doc(db,'users',uid),data,{merge:true});profile=data;startApp();}catch(e){showAuthErr($('onbErr'),'Nie udało się zapisać: '+(e.message||e));}finally{$('btnOnbSave').disabled=false;}};
+$('btnOnbSave').onclick=async()=>{const name=$('onbName').value.trim(),dob=$('onbDob').value;clearAuthErr($('onbErr'));if(!name){showAuthErr($('onbErr'),'Podaj imię dziecka.');return;}if(!dob){showAuthErr($('onbErr'),'Podaj datę urodzenia.');return;}const d=new Date(dob);if(isNaN(d)||d>new Date()){showAuthErr($('onbErr'),'Nieprawidłowa data urodzenia.');return;}$('btnOnbSave').disabled=true;try{const data={childName:name,birthDate:dob,gender:onbGender,dailyGoal:700,members:[uid],owner:uid,createdAt:serverTimestamp()};const ref=await addDoc(collection(db,'families'),data);familyId=ref.id;await setDoc(doc(db,'users',uid),{familyId,createdAt:serverTimestamp()},{merge:true});profile=data;startApp();}catch(e){showAuthErr($('onbErr'),'Nie udało się zapisać: '+(e.message||e));}finally{$('btnOnbSave').disabled=false;}};
+
+/* ===== JOIN FAMILY (zaproszenie drugiego rodzica) ===== */
+async function joinFamily(code,errEl){const c=(code||'').trim();if(!c){showAuthErr(errEl,'Wklej kod zaproszenia.');return false;}try{const fref=doc(db,'families',c);await updateDoc(fref,{members:arrayUnion(uid)});const snap=await getDoc(fref);if(!snap.exists()){showAuthErr(errEl,'Nie znaleziono rodziny dla tego kodu.');return false;}familyId=c;await setDoc(doc(db,'users',uid),{familyId,createdAt:serverTimestamp()},{merge:true});profile=snap.data();return true;}catch(e){showAuthErr(errEl,'Nie udało się dołączyć. Sprawdź kod. '+(e.code||e.message||''));return false;}}
+$('btnOnbJoin').onclick=async()=>{clearAuthErr($('onbErr'));$('btnOnbJoin').disabled=true;const ok=await joinFamily($('onbJoinCode').value,$('onbErr'));$('btnOnbJoin').disabled=false;if(ok)startApp();};
 
 /* ===== AUTH STATE ===== */
 onAuthStateChanged(auth,async user=>{
-  if(unsubFeed){unsubFeed();unsubFeed=null;}if(unsubSleep){unsubSleep();unsubSleep=null;}
-  if(!user){uid=null;profile=null;$('splash').classList.add('hidden');$('app').classList.add('hidden');$('bottomNav').classList.add('hidden');document.body.classList.remove('app-ready');$('onbOverlay').classList.add('hidden');$('authOverlay').classList.remove('hidden');return;}
+  if(unsubFeed){unsubFeed();unsubFeed=null;}if(unsubSleep){unsubSleep();unsubSleep=null;}if(unsubFamily){unsubFamily();unsubFamily=null;}
+  if(!user){uid=null;profile=null;familyId=null;$('splash').classList.add('hidden');$('app').classList.add('hidden');$('bottomNav').classList.add('hidden');document.body.classList.remove('app-ready');$('onbOverlay').classList.add('hidden');$('authOverlay').classList.remove('hidden');return;}
   uid=user.uid;$('authOverlay').classList.add('hidden');
-  try{const snap=await getDoc(doc(db,'users',uid));if(snap.exists()&&snap.data().childName){profile=snap.data();startApp();}else{const def=$('onbDob');const t=new Date();def.max=t.toISOString().slice(0,10);$('splash').classList.add('hidden');$('onbOverlay').classList.remove('hidden');}}
+  try{const usnap=await getDoc(doc(db,'users',uid));let fid=usnap.exists()?usnap.data().familyId:null;if(fid){const fsnap=await getDoc(doc(db,'families',fid));if(fsnap.exists()&&fsnap.data().childName){familyId=fid;profile=fsnap.data();startApp();return;}}const def=$('onbDob');const t=new Date();def.max=t.toISOString().slice(0,10);$('splash').classList.add('hidden');$('onbOverlay').classList.remove('hidden');}
   catch(e){showAuthErr($('authErr'),'Błąd odczytu profilu: '+(e.message||e));$('splash').classList.add('hidden');$('authOverlay').classList.remove('hidden');}
 });
 
@@ -681,7 +693,9 @@ function startApp(){
   $('tlDate').textContent=new Date().toLocaleDateString('pl-PL',{weekday:'long',day:'numeric',month:'long'});
   applyProfileUI();refreshBellUI();updateAgeUI();updateDateLabel();updateBottle(120);updateTimeSug();
   const now2=new Date();$('tripStart').value=pad(now2.getHours())+':'+pad(now2.getMinutes());const later=new Date(now2.getTime()+3*3600000);$('tripEnd').value=pad(later.getHours())+':'+pad(later.getMinutes());
-  // subscribe data (scoped to user)
+  // live profil rodziny (gdy drugi rodzic zmieni dane/cel — widać u obu)
+  unsubFamily=onSnapshot(familyRef(),snap=>{if(!snap.exists())return;profile=snap.data();dailyGoal=profile.dailyGoal||700;applyProfileUI();updateAgeUI();updateGoal();updateInsights();},err=>{});
+  // subscribe data (scoped to family — wspólne dla obojga rodziców)
   unsubFeed=onSnapshot(query(feedCol(),orderBy('eventTS','desc')),snap=>{globalData=snap.docs.map(d=>({id:d.id,...d.data()}));updateStats();updateTimer();updateGoal();updateDayNight();updateCompare();updateInsights();updateSparkline();updateHeatmap();renderMainChart();renderFeedHistory();updateAgeUI();updateTiles();runAI(false);renderTimeline();renderNapWindows();renderIntervals();},err=>{showToast('⚠️ Błąd połączenia');});
   unsubSleep=onSnapshot(query(sleepCol(),orderBy('startTS','desc')),snap=>{sleepData=snap.docs.map(d=>({id:d.id,...d.data()}));const open=sleepData.find(s=>s.open);if(open&&!activeSleepStart){activeSleepStart=open.startTS;activeSleepId=open.id;}refreshSleepBtn();updateSleepUI();renderSleepHistory();updateTiles();},err=>{});
 }
@@ -701,9 +715,11 @@ function closeModal(){$('modalBack').classList.remove('show');document.body.styl
 document.querySelectorAll('.tile').forEach(t=>t.onclick=()=>openModal(t.dataset.modal));
 document.querySelectorAll('.modal-close').forEach(b=>b.onclick=closeModal);
 $('modalBack').addEventListener('click',e=>{if(e.target===$('modalBack'))closeModal();});
-$('settingsBtn').onclick=()=>{$('setName').value=profile.childName||'';$('setDob').value=profile.birthDate||'';setGenderVal=profile.gender||'boy';document.querySelectorAll('#setGender .gender-opt').forEach(x=>x.classList.toggle('sel',x.dataset.g===setGenderVal));$('setAccount').textContent='Konto: '+(auth.currentUser&&(auth.currentUser.email||auth.currentUser.uid)||'');openModal('modal-settings');};
+$('settingsBtn').onclick=()=>{$('setName').value=profile.childName||'';$('setDob').value=profile.birthDate||'';setGenderVal=profile.gender||'boy';document.querySelectorAll('#setGender .gender-opt').forEach(x=>x.classList.toggle('sel',x.dataset.g===setGenderVal));$('setAccount').textContent='Konto: '+(auth.currentUser&&(auth.currentUser.email||auth.currentUser.uid)||'');$('inviteCode').value=familyId||'';const cnt=(profile.members&&profile.members.length)||1;$('membersInfo').textContent=cnt>1?`👪 Rodziną zarządza ${cnt} osób`:'👤 Na razie tylko Ty zarządzasz';$('joinCode').value='';clearAuthErr($('setJoinErr'));openModal('modal-settings');};
+$('copyInviteBtn').onclick=async()=>{const code=familyId||'';try{await navigator.clipboard.writeText(code);}catch(e){$('inviteCode').select();try{document.execCommand('copy');}catch(_){}}haptic(8);showToast('📋 Skopiowano kod');};
+$('btnJoin').onclick=async()=>{clearAuthErr($('setJoinErr'));if(!confirm('Dołączyć do innej rodziny? Zobaczysz dane dziecka tego konta.'))return;$('btnJoin').disabled=true;const ok=await joinFamily($('joinCode').value,$('setJoinErr'));$('btnJoin').disabled=false;if(ok){closeModal();showToast('👪 Dołączono!');location.reload();}};
 document.querySelectorAll('#setGender .gender-opt').forEach(o=>o.onclick=()=>{setGenderVal=o.dataset.g;document.querySelectorAll('#setGender .gender-opt').forEach(x=>x.classList.toggle('sel',x===o));});
-$('setSaveBtn').onclick=async()=>{const name=$('setName').value.trim(),dob=$('setDob').value;if(!name||!dob){showToast('⚠️ Uzupełnij imię i datę');return;}try{const data={childName:name,birthDate:dob,gender:setGenderVal};await setDoc(doc(db,'users',uid),data,{merge:true});profile={...profile,...data};applyProfileUI();updateAgeUI();closeModal();showToast('✓ Zapisano');}catch(e){showToast('⚠️ Błąd zapisu');}};
+$('setSaveBtn').onclick=async()=>{const name=$('setName').value.trim(),dob=$('setDob').value;if(!name||!dob){showToast('⚠️ Uzupełnij imię i datę');return;}try{const data={childName:name,birthDate:dob,gender:setGenderVal};await updateDoc(familyRef(),data);profile={...profile,...data};applyProfileUI();updateAgeUI();closeModal();showToast('✓ Zapisano');}catch(e){showToast('⚠️ Błąd zapisu');}};
 $('logoutBtn').onclick=async()=>{if(!confirm('Wylogować się?'))return;closeModal();try{await signOut(auth);}catch(e){}};
 
 /* ===== ADD FEEDING ===== */
@@ -715,18 +731,18 @@ $('timeInput').addEventListener('input',()=>userEditedTime=true);
 const updateTimeSug=()=>{if(!userEditedTime){const n=new Date();$('timeInput').value=pad(n.getHours())+':'+pad(n.getMinutes());}};
 setInterval(updateTimeSug,30000);
 $('saveFeedBtn').onclick=async()=>{const tv=$('timeInput').value;if(!tv){showToast('⚠️ Ustaw godzinę');return;}const[h,m]=tv.split(':');const d=new Date();d.setHours(parseInt(h),parseInt(m),0,0);haptic([10,40,10]);try{await addDoc(feedCol(),{type:'karmienie',mode:'butelka',ml:parseInt($('mlRange').value),time:tv,eventTS:d.getTime(),date:d.toLocaleDateString('pl-PL'),hour:d.getHours()});userEditedTime=false;updateTimeSug();showToast('✓ Zapisano!');}catch(e){showToast('⚠️ Błąd zapisu');}};
-window.delFeed=async id=>{if(confirm('Usunąć ten wpis?')){haptic(15);try{await deleteDoc(doc(db,'users',uid,'feedings',id));}catch(e){showToast('⚠️ Błąd');}}};
-window.delSleep=async id=>{if(confirm('Usunąć ten sen?')){haptic(15);try{await deleteDoc(doc(db,'users',uid,'sleeps',id));}catch(e){showToast('⚠️ Błąd');}}};
+window.delFeed=async id=>{if(confirm('Usunąć ten wpis?')){haptic(15);try{await deleteDoc(doc(db,'families',familyId,'feedings',id));}catch(e){showToast('⚠️ Błąd');}}};
+window.delSleep=async id=>{if(confirm('Usunąć ten sen?')){haptic(15);try{await deleteDoc(doc(db,'families',familyId,'sleeps',id));}catch(e){showToast('⚠️ Błąd');}}};
 
 let toastTimer=null;
 function showToast(msg){const t=$('toast');if(!t)return;t.style.display='block';if(msg)t.textContent=msg;t.classList.remove('show');void t.offsetWidth;t.classList.add('show');if(toastTimer)clearTimeout(toastTimer);toastTimer=setTimeout(()=>{t.classList.remove('show');setTimeout(()=>{if(!t.classList.contains('show'))t.style.display='none';},500);},1800);}
 
 /* ===== GOAL ===== */
-$('goalEditBtn').onclick=async()=>{const v=prompt('Ustaw dzienny cel mleka (ml):',dailyGoal);if(v===null)return;const n=parseInt(v);if(isNaN(n)||n<=0){showToast('⚠️ Podaj liczbę');return;}dailyGoal=n;try{await setDoc(doc(db,'users',uid),{dailyGoal:n},{merge:true});profile.dailyGoal=n;}catch(e){}updateGoal();updateInsights();updateSparkline();updateTiles();};
+$('goalEditBtn').onclick=async()=>{const v=prompt('Ustaw dzienny cel mleka (ml):',dailyGoal);if(v===null)return;const n=parseInt(v);if(isNaN(n)||n<=0){showToast('⚠️ Podaj liczbę');return;}dailyGoal=n;try{await updateDoc(familyRef(),{dailyGoal:n});profile.dailyGoal=n;}catch(e){}updateGoal();updateInsights();updateSparkline();updateTiles();};
 function updateGoal(){const sum=dailySum(todayKey());const pct=Math.min(Math.round(sum/dailyGoal*100),100);$('goalCurrent').textContent=sum;$('goalTarget').textContent=dailyGoal;$('goalPct').textContent=pct+'%';$('goalFill').style.width=pct+'%';const remain=dailyGoal-sum;$('goalRemain').textContent=remain>0?`Brakuje ${remain} ml`:`🎉 Cel osiągnięty! (+${Math.abs(remain)} ml)`;}
 
 /* ===== SLEEP ===== */
-$('sleepBtn').onclick=async()=>{haptic(12);if(activeSleepStart){const start=activeSleepStart,end=Date.now(),dur=end-start;activeSleepStart=null;if(dur<60000){if(activeSleepId){try{await deleteDoc(doc(db,'users',uid,'sleeps',activeSleepId));}catch(e){}}activeSleepId=null;showToast('Anulowano (za krótko)');refreshSleepBtn();return;}if(activeSleepId){try{await deleteDoc(doc(db,'users',uid,'sleeps',activeSleepId));}catch(e){}activeSleepId=null;}const d=new Date(start);try{await addDoc(sleepCol(),{type:'sen',startTS:start,endTS:end,durMin:Math.round(dur/60000),date:d.toLocaleDateString('pl-PL'),open:false});showToast('💤 Sen zapisany: '+fmtDur(dur));}catch(e){showToast('⚠️ Błąd zapisu');}}else{activeSleepStart=Date.now();const d=new Date(activeSleepStart);try{const ref=await addDoc(sleepCol(),{type:'sen',startTS:activeSleepStart,endTS:null,durMin:0,date:d.toLocaleDateString('pl-PL'),open:true});activeSleepId=ref.id;showToast('😴 Liczę sen…');}catch(e){showToast('⚠️ Błąd zapisu');}}refreshSleepBtn();};
+$('sleepBtn').onclick=async()=>{haptic(12);if(activeSleepStart){const start=activeSleepStart,end=Date.now(),dur=end-start;activeSleepStart=null;if(dur<60000){if(activeSleepId){try{await deleteDoc(doc(db,'families',familyId,'sleeps',activeSleepId));}catch(e){}}activeSleepId=null;showToast('Anulowano (za krótko)');refreshSleepBtn();return;}if(activeSleepId){try{await deleteDoc(doc(db,'families',familyId,'sleeps',activeSleepId));}catch(e){}activeSleepId=null;}const d=new Date(start);try{await addDoc(sleepCol(),{type:'sen',startTS:start,endTS:end,durMin:Math.round(dur/60000),date:d.toLocaleDateString('pl-PL'),open:false});showToast('💤 Sen zapisany: '+fmtDur(dur));}catch(e){showToast('⚠️ Błąd zapisu');}}else{activeSleepStart=Date.now();const d=new Date(activeSleepStart);try{const ref=await addDoc(sleepCol(),{type:'sen',startTS:activeSleepStart,endTS:null,durMin:0,date:d.toLocaleDateString('pl-PL'),open:true});activeSleepId=ref.id;showToast('😴 Liczę sen…');}catch(e){showToast('⚠️ Błąd zapisu');}}refreshSleepBtn();};
 function refreshSleepBtn(){const btn=$('sleepBtn'),live=$('sleepLive');if(!btn)return;const g=profile&&profile.gender;if(activeSleepStart){btn.className='sleep-btn stop';btn.textContent=(g==='girl'?'☀️ Obudziła się':'☀️ Obudził się');live.classList.add('show');$('sleepSince').textContent=fmtTime(activeSleepStart);}else{btn.className='sleep-btn start';btn.textContent=(g==='girl'?'😴 Zasnęła':'😴 Zasnął');live.classList.remove('show');}}
 setInterval(()=>{if(activeSleepStart){const el=$('sleepElapsed');if(el)el.textContent=fmtClock(Date.now()-activeSleepStart);}},1000);
 function todaySleepMin(){const tk=todayKey();let total=sleepData.filter(s=>s.date===tk&&!s.open&&s.durMin).reduce((a,s)=>a+s.durMin,0);if(activeSleepStart&&new Date(activeSleepStart).toLocaleDateString('pl-PL')===tk)total+=Math.round((Date.now()-activeSleepStart)/60000);return total;}
