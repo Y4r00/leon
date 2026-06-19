@@ -13,6 +13,12 @@
   "orientation": "portrait",
   "background_color": "#070d1a",
   "theme_color": "#070d1a",
+  "launch_handler": { "client_mode": "navigate-existing" },
+  "handle_links": "preferred",
+  "edge_side_panel": { "preferred_width": 420 },
+  "scope_extensions": [],
+  "prefer_related_applications": false,
+  "related_applications": [],
   "screenshots": [
     { "src": "Apka1.jpg", "sizes": "657x923", "type": "image/jpeg", "form_factor": "narrow", "label": "Pulpit karmienia" },
     { "src": "Apka2.jpg", "sizes": "657x922", "type": "image/jpeg", "form_factor": "narrow", "label": "Sen i drzemki" },
