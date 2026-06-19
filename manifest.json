@@ -1,14 +1,32 @@
 {
+  "id": "/leon/",
   "name": "Dziennik Malucha",
   "short_name": "Maluch",
   "description": "Dziennik karmienia, snu i rozwoju dziecka z asystentem AI.",
   "lang": "pl",
+  "dir": "ltr",
+  "categories": ["health", "lifestyle", "parenting"],
   "start_url": "index.html",
   "scope": "./",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
   "orientation": "portrait",
   "background_color": "#070d1a",
   "theme_color": "#070d1a",
+  "shortcuts": [
+    {
+      "name": "Dodaj karmienie",
+      "short_name": "Karmienie",
+      "url": "index.html#feed",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Sen",
+      "short_name": "Sen",
+      "url": "index.html#sleep",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
   "icons": [
     {
       "src": "icon-192.png",
