@@ -13,6 +13,12 @@
   "orientation": "portrait",
   "background_color": "#070d1a",
   "theme_color": "#070d1a",
+  "screenshots": [
+    { "src": "Apka1.jpg", "sizes": "657x923", "type": "image/jpeg", "form_factor": "narrow", "label": "Pulpit karmienia" },
+    { "src": "Apka2.jpg", "sizes": "657x922", "type": "image/jpeg", "form_factor": "narrow", "label": "Sen i drzemki" },
+    { "src": "Apka3.jpg", "sizes": "661x921", "type": "image/jpeg", "form_factor": "narrow", "label": "Planer i normy" },
+    { "src": "Apka4.jpg", "sizes": "665x918", "type": "image/jpeg", "form_factor": "narrow", "label": "Podsumowanie i analiza" }
+  ],
   "shortcuts": [
     {
       "name": "Dodaj karmienie",
