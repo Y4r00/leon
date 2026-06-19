@@ -7,7 +7,12 @@
 <meta name="theme-color" content="#070d1a">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dziennik Malucha">
+<meta name="description" content="Dziennik karmienia, snu i rozwoju dziecka z asystentem AI.">
 <link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
 <title>Dziennik Malucha</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://js.puter.com/v2/"></script>
@@ -608,6 +613,10 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <div class="auth-field"><label>Masz kod od drugiego rodzica?</label><input class="auth-input" id="joinCode" type="text" placeholder="Wklej kod, aby dołączyć" autocomplete="off"></div>
     <button class="auth-btn" id="btnJoin" style="background:rgba(79,255,176,.12);border:1px solid rgba(79,255,176,.35);color:var(--green);margin-bottom:14px">👪 Dołącz do innej rodziny</button>
     <div class="ai-divider"></div>
+    <div class="ai-chat-head">✉️ Pomoc i kontakt</div>
+    <div style="font-size:.66rem;color:var(--text2);line-height:1.5;margin-bottom:10px">Masz pytanie, pomysł lub napotkałeś błąd? Napisz do nas — chętnie pomożemy.</div>
+    <a class="auth-btn" id="supportBtn" href="mailto:jaroslaw1980@gmail.com?subject=Dziennik%20Malucha%20-%20kontakt" style="text-decoration:none;background:rgba(74,158,255,.14);border:1px solid rgba(74,158,255,.4);color:var(--accent2);margin-bottom:14px">✉️ Napisz do nas</a>
+    <div class="ai-divider"></div>
     <button class="auth-btn" id="logoutBtn" style="background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.35);color:#ffb3b3">🚪 Wyloguj się</button>
     <div style="font-size:.6rem;color:var(--text3);text-align:center;margin-top:14px" id="setAccount"></div>
   </div></div>
@@ -721,6 +730,7 @@ $('btnJoin').onclick=async()=>{clearAuthErr($('setJoinErr'));if(!confirm('Dołą
 document.querySelectorAll('#setGender .gender-opt').forEach(o=>o.onclick=()=>{setGenderVal=o.dataset.g;document.querySelectorAll('#setGender .gender-opt').forEach(x=>x.classList.toggle('sel',x===o));});
 $('setSaveBtn').onclick=async()=>{const name=$('setName').value.trim(),dob=$('setDob').value;if(!name||!dob){showToast('⚠️ Uzupełnij imię i datę');return;}try{const data={childName:name,birthDate:dob,gender:setGenderVal};await updateDoc(familyRef(),data);profile={...profile,...data};applyProfileUI();updateAgeUI();closeModal();showToast('✓ Zapisano');}catch(e){showToast('⚠️ Błąd zapisu');}};
 $('logoutBtn').onclick=async()=>{if(!confirm('Wylogować się?'))return;closeModal();try{await signOut(auth);}catch(e){}};
+$('supportBtn').onclick=()=>{const acc=auth.currentUser&&(auth.currentUser.email||auth.currentUser.uid)||'';const body=encodeURIComponent(`\n\n--- Informacje techniczne (możesz zostawić) ---\nKonto: ${acc}\nDziecko: ${childName()}\nWersja: PWA ${location.host}\n`);$('supportBtn').setAttribute('href',`mailto:jaroslaw1980@gmail.com?subject=${encodeURIComponent('Dziennik Malucha - kontakt')}&body=${body}`);haptic(8);};
 
 /* ===== ADD FEEDING ===== */
 let userEditedTime=false;
@@ -806,6 +816,12 @@ $('alarmDismiss').onclick=()=>dismissAlarm();
 function dismissAlarm(){alarmActive=false;const b=$('alarmBanner');if(b)b.classList.remove('show');if(lastEventTS)alarmFiredFor=lastEventTS;}
 function fireReminder(nextTS){if(alarmActive)return;alarmActive=true;alarmFiredFor=lastEventTS;const b=$('alarmBanner'),sub=$('alarmSub');if(b){if(sub)sub.textContent=`Przewidywana pora: ${fmtTime(nextTS)} · ostatnie ${fmtDur(Date.now()-lastEventTS)} temu`;b.classList.add('show');}haptic([200,100,200,100,200]);if('Notification'in window&&Notification.permission==='granted'){try{const n=new Notification('🍼 Czas na karmienie!',{body:`${childName()}: przewidywana pora (${fmtTime(nextTS)}) właśnie minęła.`,tag:'feed',requireInteraction:true});n.onclick=()=>{window.focus();dismissAlarm();n.close();};}catch(e){}}}
 function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS)return;if(alarmFiredFor===lastEventTS)return;const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(Date.now()>=nextTS)fireReminder(nextTS);}
+</script>
+<script>
+/* ===== Service Worker (PWA / instalacja, offline) ===== */
+if('serviceWorker' in navigator && location.protocol!=='file:'){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
+}
 </script>
 </body>
 </html>
