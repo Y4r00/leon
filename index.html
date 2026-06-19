@@ -19,11 +19,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#070d1a;--bg2:#0d1930;--bg3:#111e38;--accent:#4A9EFF;--accent2:#7BC4FF;--gold:#FFB347;--gold2:#ffd080;--glass:rgba(255,255,255,0.05);--gb:rgba(255,255,255,0.10);--text:#F0F6FF;--text2:#8BA3C4;--text3:#4A6080;--danger:#FF6B6B;--green:#4FFFB0;--purple:#B57BFF;--pink:#FF7BC4;--safe-bottom:env(safe-area-inset-bottom,0px);--safe-top:env(safe-area-inset-top,0px)}
+body.light{--bg:#EEF3FB;--bg2:#ffffff;--bg3:#dde7f5;--accent:#2A7ED4;--accent2:#1f6fc0;--gold:#E6900F;--gold2:#c97b00;--glass:rgba(20,40,80,0.05);--gb:rgba(20,40,80,0.14);--text:#10203A;--text2:#42587A;--text3:#7C90AE;--danger:#D64545;--green:#0F9D6B;--purple:#7B4FD4;--pink:#D14d92}
+body.light .rtime,body.light .goal-pct,body.light .sleep-live-timer,body.light .ml-big,body.light .header-text h1,body.light .auth-title{-webkit-text-fill-color:initial}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{height:auto;overflow-x:hidden}
-body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden;-webkit-overflow-scrolling:touch;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden;-webkit-overflow-scrolling:touch;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
 body.app-ready{padding-bottom:calc(82px + var(--safe-bottom))}
 .hidden{display:none!important}
+.theme-row{display:flex;gap:8px;margin-bottom:14px}
+.theme-opt{flex:1;background:rgba(0,0,0,.2);border:1px solid var(--gb);border-radius:14px;padding:13px 6px;text-align:center;cursor:pointer;transition:all .2s;font-size:.78rem;font-weight:700;color:var(--text2)}
+.theme-opt .te{font-size:1.4rem;display:block;margin-bottom:4px}
+.theme-opt.sel{border-color:var(--accent);background:rgba(74,158,255,.14);color:var(--text)}
 /* ===== AUTH / ONBOARDING ===== */
 .overlay{position:fixed;inset:0;z-index:2000;background:radial-gradient(circle at 50% 0%,#0d1930,#070d1a 70%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 22px calc(28px + var(--safe-bottom));overflow-y:auto;padding-top:calc(28px + var(--safe-top))}
 .auth-logo{width:84px;height:84px;border-radius:26px;background:linear-gradient(135deg,var(--accent),var(--purple));display:flex;align-items:center;justify-content:center;font-size:2.4rem;box-shadow:0 10px 40px rgba(74,158,255,.4);margin-bottom:18px}
@@ -598,8 +604,21 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <div class="dnav"><button class="abtn" id="chartPrev" aria-label="Poprzedni">‹</button><span class="dlabel" id="dateLabel">Dzisiaj</span><button class="abtn" id="chartNext" aria-label="Następny">›</button></div>
     <div class="cw"><canvas id="mainChart"></canvas></div></div>
   </div></div>
+  <!-- CONTACT FORM -->
+  <div class="modal hidden" id="modal-contact"><div class="modal-grip"></div><div class="modal-head"><span class="modal-emo">✉️</span><span class="modal-title">Napisz do nas</span><button class="modal-close">✕</button></div><div class="modal-body" style="padding:18px 16px">
+    <div class="auth-err" id="contactErr"></div>
+    <div class="auth-field"><label>Temat</label><input class="auth-input" id="contactSubject" type="text" maxlength="80" placeholder="Czego dotyczy wiadomość?"></div>
+    <div class="auth-field"><label>Imię i nazwisko</label><input class="auth-input" id="contactName" type="text" maxlength="60" placeholder="Jak się do Ciebie zwracać?"></div>
+    <div class="auth-field"><label>Twój e-mail (odpowiemy na ten adres)</label><input class="auth-input" id="contactEmail" type="email" placeholder="twoj@email.pl"></div>
+    <div class="auth-field"><label>Wiadomość</label><textarea class="auth-input" id="contactMsg" rows="5" maxlength="2000" placeholder="Opisz pytanie, pomysł lub błąd…" style="resize:vertical;min-height:110px;font-family:'Inter',sans-serif"></textarea></div>
+    <button class="auth-btn primary" id="contactSendBtn">📨 Wyślij wiadomość</button>
+    <div style="font-size:.58rem;color:var(--text3);text-align:center;margin-top:12px;line-height:1.5">Wiadomość trafia bezpiecznie do zespołu aplikacji. Nie musisz mieć skonfigurowanej poczty w telefonie.</div>
+  </div></div>
   <!-- SETTINGS -->
   <div class="modal hidden" id="modal-settings"><div class="modal-grip"></div><div class="modal-head"><span class="modal-emo">⚙️</span><span class="modal-title">Ustawienia</span><button class="modal-close">✕</button></div><div class="modal-body" style="padding:18px 16px">
+    <div class="ai-chat-head">🎨 Motyw aplikacji</div>
+    <div class="theme-row" id="themeRow"><div class="theme-opt" data-theme="dark"><span class="te">🌙</span>Ciemny</div><div class="theme-opt" data-theme="light"><span class="te">☀️</span>Jasny</div></div>
+    <div class="ai-divider"></div>
     <div class="auth-field"><label>Imię dziecka</label><input class="auth-input" id="setName" type="text" maxlength="30"></div>
     <div class="auth-field"><label>Data urodzenia</label><input class="auth-input" id="setDob" type="date"></div>
     <div class="auth-field"><label>Płeć</label><div class="gender-row" id="setGender"><div class="gender-opt boy" data-g="boy"><span class="ge">👦</span>Chłopiec</div><div class="gender-opt girl" data-g="girl"><span class="ge">👧</span>Dziewczynka</div><div class="gender-opt other" data-g="other"><span class="ge">🍼</span>—</div></div></div>
@@ -614,8 +633,8 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <button class="auth-btn" id="btnJoin" style="background:rgba(79,255,176,.12);border:1px solid rgba(79,255,176,.35);color:var(--green);margin-bottom:14px">👪 Dołącz do innej rodziny</button>
     <div class="ai-divider"></div>
     <div class="ai-chat-head">✉️ Pomoc i kontakt</div>
-    <div style="font-size:.66rem;color:var(--text2);line-height:1.5;margin-bottom:10px">Masz pytanie, pomysł lub napotkałeś błąd? Napisz do nas — chętnie pomożemy.</div>
-    <a class="auth-btn" id="supportBtn" href="mailto:jaroslaw1980@gmail.com?subject=Dziennik%20Malucha%20-%20kontakt" style="text-decoration:none;background:rgba(74,158,255,.14);border:1px solid rgba(74,158,255,.4);color:var(--accent2);margin-bottom:14px">✉️ Napisz do nas</a>
+    <div style="font-size:.66rem;color:var(--text2);line-height:1.5;margin-bottom:10px">Masz pytanie, pomysł lub napotkałeś błąd? Wypełnij formularz — odpowiemy najszybciej jak to możliwe.</div>
+    <button class="auth-btn" id="supportBtn" style="background:rgba(74,158,255,.14);border:1px solid rgba(74,158,255,.4);color:var(--accent2);margin-bottom:14px">✉️ Napisz do nas</button>
     <div class="ai-divider"></div>
     <button class="auth-btn" id="logoutBtn" style="background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.35);color:#ffb3b3">🚪 Wyloguj się</button>
     <div style="font-size:.6rem;color:var(--text3);text-align:center;margin-top:14px" id="setAccount"></div>
@@ -649,6 +668,10 @@ const todayKey=()=>new Date().toLocaleDateString('pl-PL');
 const dailySum=ds=>globalData.filter(f=>f.date===ds).reduce((s,c)=>s+c.ml,0);
 function haptic(ms){if(navigator.vibrate)try{navigator.vibrate(ms);}catch(e){}}
 const $=id=>document.getElementById(id);
+/* ===== THEME ===== */
+function applyTheme(t){const light=t==='light';document.body.classList.toggle('light',light);const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',light?'#EEF3FB':'#070d1a');localStorage.setItem('theme',t);document.querySelectorAll('#themeRow .theme-opt').forEach(o=>o.classList.toggle('sel',o.dataset.theme===t));}
+applyTheme(localStorage.getItem('theme')||'dark');
+document.querySelectorAll('#themeRow .theme-opt').forEach(o=>o.onclick=()=>{applyTheme(o.dataset.theme);haptic(8);if(mainChart)renderMainChart();if(sparkChart)updateSparkline();});
 function familyRef(){return doc(db,'families',familyId);}
 function feedCol(){return collection(db,'families',familyId,'feedings');}
 function sleepCol(){return collection(db,'families',familyId,'sleeps');}
@@ -730,7 +753,8 @@ $('btnJoin').onclick=async()=>{clearAuthErr($('setJoinErr'));if(!confirm('Dołą
 document.querySelectorAll('#setGender .gender-opt').forEach(o=>o.onclick=()=>{setGenderVal=o.dataset.g;document.querySelectorAll('#setGender .gender-opt').forEach(x=>x.classList.toggle('sel',x===o));});
 $('setSaveBtn').onclick=async()=>{const name=$('setName').value.trim(),dob=$('setDob').value;if(!name||!dob){showToast('⚠️ Uzupełnij imię i datę');return;}try{const data={childName:name,birthDate:dob,gender:setGenderVal};await updateDoc(familyRef(),data);profile={...profile,...data};applyProfileUI();updateAgeUI();closeModal();showToast('✓ Zapisano');}catch(e){showToast('⚠️ Błąd zapisu');}};
 $('logoutBtn').onclick=async()=>{if(!confirm('Wylogować się?'))return;closeModal();try{await signOut(auth);}catch(e){}};
-$('supportBtn').onclick=()=>{const acc=auth.currentUser&&(auth.currentUser.email||auth.currentUser.uid)||'';const body=encodeURIComponent(`\n\n--- Informacje techniczne (możesz zostawić) ---\nKonto: ${acc}\nDziecko: ${childName()}\nWersja: PWA ${location.host}\n`);$('supportBtn').setAttribute('href',`mailto:jaroslaw1980@gmail.com?subject=${encodeURIComponent('Dziennik Malucha - kontakt')}&body=${body}`);haptic(8);};
+$('supportBtn').onclick=()=>{$('contactEmail').value=(auth.currentUser&&auth.currentUser.email)||'';$('contactName').value=(auth.currentUser&&auth.currentUser.displayName)||'';$('contactSubject').value='';$('contactMsg').value='';clearAuthErr($('contactErr'));openModal('modal-contact');};
+$('contactSendBtn').onclick=async()=>{const subject=$('contactSubject').value.trim(),name=$('contactName').value.trim(),email=$('contactEmail').value.trim(),msg=$('contactMsg').value.trim();clearAuthErr($('contactErr'));if(!msg){showAuthErr($('contactErr'),'Wpisz treść wiadomości.');return;}if(!email||!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){showAuthErr($('contactErr'),'Podaj poprawny adres e-mail.');return;}$('contactSendBtn').disabled=true;const payload={_subject:'[Dziennik Malucha] '+(subject||'(brak tematu)'),temat:subject||'(brak tematu)',imie:name||'',email,wiadomosc:msg,konto:uid||'',dziecko:childName(),urzadzenie:navigator.userAgent};try{const r=await fetch('https://formspree.io/f/xlgkqrzr',{method:'POST',headers:{'Accept':'application/json','Content-Type':'application/json'},body:JSON.stringify(payload)});if(!r.ok)throw new Error('Formspree '+r.status);haptic([10,40,10]);closeModal();showToast('📨 Wiadomość wysłana!');}catch(e){try{await addDoc(collection(db,'support'),{subject:subject||'(brak tematu)',name:name||'',email,message:msg,uid:uid||null,childName:childName(),userAgent:navigator.userAgent,createdAt:serverTimestamp()});haptic([10,40,10]);closeModal();showToast('📨 Wiadomość wysłana!');}catch(e2){showAuthErr($('contactErr'),'Nie udało się wysłać. Sprawdź internet i spróbuj ponownie.');}}finally{$('contactSendBtn').disabled=false;}};
 
 /* ===== ADD FEEDING ===== */
 let userEditedTime=false;

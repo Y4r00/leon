@@ -46,6 +46,13 @@ service cloud.firestore {
       }
     }
 
+    // Wiadomości do supportu. Zalogowany użytkownik może je TYLKO tworzyć
+    // (wysyłać). Odczyt/edycja zarezerwowane dla administratora (konsola Firebase).
+    match /support/{docId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if false;
+    }
+
     // Wszystko inne domyślnie zablokowane.
     match /{document=**} {
       allow read, write: if false;
