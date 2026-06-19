@@ -20,7 +20,30 @@
 <style>
 :root{--bg:#070d1a;--bg2:#0d1930;--bg3:#111e38;--accent:#4A9EFF;--accent2:#7BC4FF;--gold:#FFB347;--gold2:#ffd080;--glass:rgba(255,255,255,0.05);--gb:rgba(255,255,255,0.10);--text:#F0F6FF;--text2:#8BA3C4;--text3:#4A6080;--danger:#FF6B6B;--green:#4FFFB0;--purple:#B57BFF;--pink:#FF7BC4;--safe-bottom:env(safe-area-inset-bottom,0px);--safe-top:env(safe-area-inset-top,0px)}
 body.light{--bg:#EEF3FB;--bg2:#ffffff;--bg3:#dde7f5;--accent:#2A7ED4;--accent2:#1f6fc0;--gold:#E6900F;--gold2:#c97b00;--glass:rgba(20,40,80,0.05);--gb:rgba(20,40,80,0.14);--text:#10203A;--text2:#42587A;--text3:#7C90AE;--danger:#D64545;--green:#0F9D6B;--purple:#7B4FD4;--pink:#D14d92}
-body.light .rtime,body.light .goal-pct,body.light .sleep-live-timer,body.light .ml-big,body.light .header-text h1,body.light .auth-title{-webkit-text-fill-color:initial}
+/* ---- Light theme overrides (czytelność) ---- */
+body.light .rtime,body.light .goal-pct,body.light .sleep-live-timer,body.light .ml-big,body.light .header-text h1,body.light .auth-title{-webkit-text-fill-color:initial;background:none;color:var(--accent2)}
+body.light .ml-big{color:var(--gold)}
+body.light .goal-pct,body.light .sleep-live-timer{color:var(--purple)}
+body.light .app-header{background:linear-gradient(180deg,#ffffff 0%,rgba(255,255,255,.85) 70%,transparent 100%)}
+body.light .bottom-nav{background:rgba(255,255,255,.96)}
+body.light .overlay{background:radial-gradient(circle at 50% 0%,#dbe7fb,#eef3fb 70%)}
+body.light .auth-title{color:var(--accent)}
+body.light .auth-sub,body.light .auth-foot{color:var(--text2)}
+body.light #splash{background:radial-gradient(circle at 50% 40%,#dbe7fb,#eef3fb 70%)}
+body.light #splash div{color:var(--text2)!important}
+body.light .modal{background:linear-gradient(180deg,#ffffff,#f3f7fd);border-color:var(--gb)}
+body.light .modal-head{background:linear-gradient(180deg,#ffffff,rgba(255,255,255,.92))}
+body.light .card,body.light .stat-p,body.light .ins,body.light .dn-half,body.light .cmp-card,body.light .trend-card,body.light .hm-card,body.light .nap-card,body.light .timeline-card,body.light .input-card,body.light .ivchip,body.light .log-item,body.light .tile,body.light .bottle-chip{background:#ffffff;border-color:var(--gb);box-shadow:0 1px 3px rgba(20,40,80,.06)}
+body.light .auth-input,body.light .auth-select,body.light input[type="time"],body.light input[type="date"],body.light .ai-chat-input input,body.light input[type="range"]{background:#eef3fb;border-color:var(--gb);color:var(--text)}
+body.light .theme-opt,body.light .gender-opt,body.light .pbtn,body.light .norm-item,body.light .diet-status,body.light .goal-bar,body.light .tl-body,body.light .chart-tabs{background:#eef3fb}
+body.light .chart-tabs{background:#e2eaf6}
+body.light .chat-ai{background:#eef3fb;border-color:var(--gb);color:var(--text)}
+body.light .ai-chat-msgs::-webkit-scrollbar-thumb{background:rgba(123,79,212,.4)}
+body.light .lic{background:rgba(42,126,212,.12)}
+body.light .log-item.sleep-log .lic{background:rgba(123,79,212,.14)}
+body.light .abtn,body.light .hicon-btn,body.light .modal-close,body.light .alarm-x{background:#eef3fb}
+body.light .save-btn,body.light .sleep-btn.start,body.light .trip-btn,body.light .auth-btn.primary{color:#fff}
+body.light .toast{box-shadow:0 8px 28px rgba(15,157,107,.3)}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{height:auto;overflow-x:hidden}
 body{font-family:'Inter',sans-serif;color:var(--text);background:var(--bg);min-height:100vh;overflow-x:hidden;-webkit-overflow-scrolling:touch;-webkit-font-smoothing:antialiased;transition:background .3s,color .3s}
@@ -834,12 +857,20 @@ function renderFeedHistory(){const merged=[...globalData].sort((a,b)=>b.eventTS-
 function renderSleepHistory(){const merged=sleepData.filter(s=>!s.open&&s.endTS).sort((a,b)=>b.endTS-a.endTS).slice(0,60);const cont=$('historySleep');if(!merged.length){cont.innerHTML='<div class="empty"><div class="emo">💤</div>Brak zapisów snu</div>';return;}let html='',ld='';merged.forEach(s=>{if(s.date!==ld){const tot=sleepData.filter(x=>x.date===s.date&&!x.open&&x.durMin).reduce((a,x)=>a+x.durMin,0);html+=`<div class="dgh">${s.date}<span class="dgh-sum">${Math.floor(tot/60)}h ${tot%60}m snu</span></div>`;ld=s.date;}html+=`<div class="log-item sleep-log"><div class="lic">💤</div><div class="lib"><div class="liml">${fmtDur(s.durMin*60000)} snu</div><div class="lit">${fmtTime(s.startTS)} – ${fmtTime(s.endTS)}</div></div><button class="dbtn" onclick="delSleep('${s.id}')" aria-label="Usuń">✕</button></div>`;});cont.innerHTML=html;}
 
 /* ===== REMINDERS ===== */
+/* Natywne powiadomienia (Capacitor) — działają nawet gdy aplikacja jest zamknięta. */
+const CAP=()=> (window.Capacitor&&window.Capacitor.Plugins&&window.Capacitor.Plugins.LocalNotifications)||null;
+const isNative=()=> !!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+const NOTIF_ID=1001;
+let nativeSchedFor=0;
+async function requestNativePerm(){const ln=CAP();if(!ln)return false;try{const p=await ln.requestPermissions();return p&&(p.display==='granted'||p.display==='prompt'?true:p.display==='granted');}catch(e){return false;}}
+async function syncNativeReminder(){const ln=CAP();if(!ln)return;try{if(!remindersOn||!avgIntervalMs||!lastEventTS){if(nativeSchedFor){await ln.cancel({notifications:[{id:NOTIF_ID}]});nativeSchedFor=0;}return;}const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(nextTS<=Date.now()+5000){return;}if(nextTS===nativeSchedFor)return;await ln.cancel({notifications:[{id:NOTIF_ID}]});await ln.schedule({notifications:[{id:NOTIF_ID,title:'🍼 Czas na karmienie!',body:`${childName()}: przewidywana pora ok. ${fmtTime(nextTS)}.`,schedule:{at:new Date(nextTS),allowWhileIdle:true},smallIcon:'ic_stat_icon_config_sample',channelId:'feeding'}]});nativeSchedFor=nextTS;}catch(e){}}
+async function cancelNativeReminder(){const ln=CAP();if(!ln)return;try{await ln.cancel({notifications:[{id:NOTIF_ID}]});nativeSchedFor=0;}catch(e){}}
 function refreshBellUI(){const btn=$('bellBtn');if(btn)btn.classList.toggle('on',remindersOn);}
-$('bellBtn').onclick=async()=>{if(!remindersOn){if('Notification'in window&&Notification.permission==='default'){try{await Notification.requestPermission();}catch(e){}}remindersOn=true;localStorage.setItem('rem_'+uid,'1');haptic(12);showToast(('Notification'in window&&Notification.permission==='denied')?'🔔 Włączono (baner w apce)':'🔔 Przypomnienia włączone');}else{remindersOn=false;localStorage.setItem('rem_'+uid,'0');dismissAlarm();haptic(8);showToast('🔕 Przypomnienia wyłączone');}refreshBellUI();};
+$('bellBtn').onclick=async()=>{if(!remindersOn){if(isNative()){await requestNativePerm();}else if('Notification'in window&&Notification.permission==='default'){try{await Notification.requestPermission();}catch(e){}}remindersOn=true;localStorage.setItem('rem_'+uid,'1');haptic(12);await syncNativeReminder();showToast(isNative()?'🔔 Przypomnienia włączone (także w tle)':(('Notification'in window&&Notification.permission==='denied')?'🔔 Włączono (baner w apce)':'🔔 Przypomnienia włączone'));}else{remindersOn=false;localStorage.setItem('rem_'+uid,'0');dismissAlarm();await cancelNativeReminder();haptic(8);showToast('🔕 Przypomnienia wyłączone');}refreshBellUI();};
 $('alarmDismiss').onclick=()=>dismissAlarm();
 function dismissAlarm(){alarmActive=false;const b=$('alarmBanner');if(b)b.classList.remove('show');if(lastEventTS)alarmFiredFor=lastEventTS;}
 function fireReminder(nextTS){if(alarmActive)return;alarmActive=true;alarmFiredFor=lastEventTS;const b=$('alarmBanner'),sub=$('alarmSub');if(b){if(sub)sub.textContent=`Przewidywana pora: ${fmtTime(nextTS)} · ostatnie ${fmtDur(Date.now()-lastEventTS)} temu`;b.classList.add('show');}haptic([200,100,200,100,200]);if('Notification'in window&&Notification.permission==='granted'){try{const n=new Notification('🍼 Czas na karmienie!',{body:`${childName()}: przewidywana pora (${fmtTime(nextTS)}) właśnie minęła.`,tag:'feed',requireInteraction:true});n.onclick=()=>{window.focus();dismissAlarm();n.close();};}catch(e){}}}
-function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS)return;if(alarmFiredFor===lastEventTS)return;const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(Date.now()>=nextTS)fireReminder(nextTS);}
+function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS){return;}if(nativeSchedFor!==(lastEventTS+nextIntervalMs(lastEventTS)))syncNativeReminder();if(alarmFiredFor===lastEventTS)return;const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(Date.now()>=nextTS)fireReminder(nextTS);}
 </script>
 <script>
 /* ===== Service Worker (PWA / instalacja, offline) ===== */
