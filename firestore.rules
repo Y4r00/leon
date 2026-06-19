@@ -1,1 +1,27 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Profil użytkownika i wszystkie dane dziecka są dostępne TYLKO
+    // dla zalogowanego właściciela (request.auth.uid == userId).
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+
+      // Karmienia danego użytkownika
+      match /feedings/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+
+      // Sen danego użytkownika
+      match /sleeps/{docId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+
+    // Wszystko inne domyślnie zablokowane.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
 
