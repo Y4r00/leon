@@ -1084,6 +1084,27 @@ function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS){return;}
 if('serviceWorker' in navigator && location.protocol!=='file:'){
   window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});
 }
+/* ===== Deep links: skróty (shortcuts) i share_target / protocol_handlers ===== */
+(function(){
+  function route(){
+    try{
+      var go=function(page){var b=document.querySelector('.nav-item[data-page="'+page+'"]');if(b)b.click();};
+      var hash=(location.hash||'').replace('#','').toLowerCase();
+      if(hash==='sleep')go('page-sleep');
+      else if(hash==='plan')go('page-plan');
+      else if(hash==='summary')go('page-summary');
+      else if(hash==='feed')go('page-feed');
+      var p=new URLSearchParams(location.search);
+      var shared=[p.get('text'),p.get('title'),p.get('url'),p.get('bp')].filter(Boolean).join(' ').trim();
+      if(shared){
+        var inp=document.getElementById('aiChatInput');
+        if(inp && typeof openModal==='function'){openModal('modal-ai');inp.value=shared;inp.focus();}
+      }
+    }catch(e){}
+  }
+  if(document.readyState==='complete'||document.readyState==='interactive')setTimeout(route,300);
+  else window.addEventListener('DOMContentLoaded',()=>setTimeout(route,300));
+})();
 </script>
 </body>
 </html>
