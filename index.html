@@ -260,6 +260,27 @@ body.app-ready{padding-bottom:calc(82px + var(--safe-bottom))}
 .ai-chat-send{width:46px;height:46px;flex-shrink:0;border:none;border-radius:13px;background:linear-gradient(135deg,var(--purple),#7f4fc4);color:#fff;font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;box-shadow:0 4px 14px rgba(181,123,255,.35)}
 .ai-chat-send:active{transform:scale(.9)}
 .ai-chat-send:disabled{opacity:.5;cursor:default}
+.ai-mic{width:46px;height:46px;flex-shrink:0;border:1px solid rgba(181,123,255,.45);border-radius:13px;background:rgba(181,123,255,.16);color:var(--purple);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s,background .2s}
+.ai-mic:active{transform:scale(.9)}
+.ai-mic.listening{background:linear-gradient(135deg,#ff5b7f,#b57bff);color:#fff;border-color:transparent;animation:vmic 1.1s infinite}
+@keyframes vmic{0%,100%{box-shadow:0 0 0 0 rgba(255,91,127,.5)}50%{box-shadow:0 0 0 9px rgba(255,91,127,0)}}
+.voice-panel{position:fixed;left:50%;bottom:86px;transform:translateX(-50%) translateY(16px);width:min(92%,420px);background:var(--card,#0f1830);border:1px solid var(--gb);border-radius:20px;padding:18px 16px 14px;box-shadow:0 16px 48px rgba(0,0,0,.55);z-index:9999;opacity:0;pointer-events:none;transition:opacity .25s,transform .25s}
+.voice-panel.show{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.voice-orb{width:56px;height:56px;border-radius:50%;margin:0 auto 12px;background:linear-gradient(135deg,#b57bff,#7f4fc4);display:flex;align-items:center;justify-content:center;font-size:1.6rem;animation:vmic 1.3s infinite}
+.voice-status{text-align:center;font-size:.84rem;font-weight:700;color:var(--text);line-height:1.45;min-height:1.2em}
+.voice-heard{text-align:center;font-size:.72rem;color:var(--text2);margin-top:7px;min-height:1em;font-style:italic}
+.voice-stop{display:block;margin:13px auto 0;background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.35);color:#ffb3b3;border-radius:12px;padding:8px 20px;font-size:.74rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+.vswitch{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(0,0,0,.2);border:1px solid var(--gb);border-radius:14px;padding:12px 14px;margin-top:4px}
+.vswitch-txt{font-size:.78rem;font-weight:700;color:var(--text)}
+.vswitch-sub{font-size:.62rem;color:var(--text2);margin-top:4px;line-height:1.45;font-weight:500}
+.vtoggle{width:48px;height:27px;border-radius:14px;background:rgba(255,255,255,.16);position:relative;flex-shrink:0;cursor:pointer;transition:background .2s;align-self:center}
+.vtoggle::after{content:'';position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#fff;transition:transform .2s}
+.vtoggle.on{background:var(--purple)}
+.vtoggle.on::after{transform:translateX(21px)}
+.voice-fab{position:fixed;right:16px;bottom:80px;width:56px;height:56px;border-radius:50%;border:none;background:linear-gradient(135deg,#b57bff,#7f4fc4);color:#fff;font-size:1.5rem;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 22px rgba(127,79,196,.5);z-index:150;transition:transform .15s}
+.voice-fab:active{transform:scale(.9)}
+.voice-fab.wake{box-shadow:0 8px 22px rgba(127,79,196,.5),0 0 0 3px rgba(79,255,176,.6)}
+.voice-fab.listening{background:linear-gradient(135deg,#ff5b7f,#b57bff);animation:vmic 1.1s infinite}
 /* ===== CHARTS / TREND / HEATMAP ===== */
 .chart-tabs{display:flex;gap:4px;background:rgba(0,0,0,.3);border-radius:12px;padding:3px;width:100%;margin-bottom:10px}
 .ctab{font-size:.63rem;font-weight:700;padding:8px 0;border-radius:9px;border:none;background:transparent;color:var(--text3);cursor:pointer;transition:all .2s;flex:1;font-family:'Inter',sans-serif;min-height:36px}
@@ -497,6 +518,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
 <button class="hicon-btn" id="bellBtn" aria-label="Przypomnienia"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3a6 6 0 0 0-6 6c0 4-1.5 5.5-2 6.2-.3.5 0 1.3.7 1.3h14.6c.7 0 1-.8.7-1.3-.5-.7-2-2.2-2-6.2a6 6 0 0 0-6-6Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M10 20a2 2 0 0 0 4 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
 <button class="hicon-btn" id="settingsBtn" aria-label="Ustawienia"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06A2 2 0 1 1 7.04 3.3l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V2a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H22a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>
 </div></div>
+<button class="voice-fab" id="voiceFab" aria-label="Asystent głosowy">🎤</button>
 
 <!-- ===== PAGE: KARMIENIE ===== -->
 <div id="page-feed" class="page active">
@@ -590,7 +612,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <div class="ai-chat-head" data-i18n="ai_chat_head">💬 Zapytaj asystenta (AI)</div>
     <div class="ai-chat-suggest" id="aiChatSuggest"><button class="chat-chip" data-i18n="chip_eat_enough">Czy je wystarczająco?</button><button class="chat-chip" data-i18n="chip_night_sleep">Jak wydłużyć nocny sen?</button><button class="chat-chip" data-i18n="chip_when_solids">Kiedy rozszerzać dietę?</button></div>
     <div class="ai-chat-msgs" id="aiChatMsgs"></div>
-    <div class="ai-chat-input"><input id="aiChatInput" type="text" data-i18n-ph="ai_input_ph" placeholder="Napisz pytanie…" autocomplete="off"><button class="ai-chat-send" id="aiChatSend" aria-label="Wyślij">➤</button></div></div>
+    <div class="ai-chat-input"><input id="aiChatInput" type="text" data-i18n-ph="ai_input_ph" placeholder="Napisz pytanie…" autocomplete="off"><button class="ai-mic" id="voiceMicBtn" aria-label="Mów">🎤</button><button class="ai-chat-send" id="aiChatSend" aria-label="Wyślij">➤</button></div></div>
   </div></div>
   <!-- GOAL -->
   <div class="modal hidden" id="modal-goal"><div class="modal-grip"></div><div class="modal-head"><span class="modal-emo">🎯</span><span class="modal-title" data-i18n="m_goal">Cel dnia</span><button class="modal-close">✕</button></div><div class="modal-body">
@@ -660,6 +682,9 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
     <div class="ai-divider"></div>
     <div class="ai-chat-head" data-i18n="theme_head">🎨 Motyw aplikacji</div>
     <div class="theme-row" id="themeRow"><div class="theme-opt" data-theme="dark"><span class="te">🌙</span><span data-i18n="theme_dark">Ciemny</span></div><div class="theme-opt" data-theme="light"><span class="te">☀️</span><span data-i18n="theme_light">Jasny</span></div></div>
+    <div class="ai-divider" id="voiceDivider"></div>
+    <div class="ai-chat-head" id="voiceHead">🎙️ Asystent głosowy</div>
+    <div class="vswitch" id="voiceSection"><div><div class="vswitch-txt" id="voiceWakeTxt">Tryb „Hej BabyPulse”</div><div class="vswitch-sub" id="voiceWakeSub">Nasłuch frazy budzącej, gdy aplikacja jest otwarta.</div></div><div class="vtoggle" id="voiceWakeToggle" role="switch" aria-label="Hej BabyPulse"></div></div>
     <div class="ai-divider"></div>
     <div class="auth-field"><label data-i18n="child_name">Imię dziecka</label><input class="auth-input" id="setName" type="text" maxlength="30"></div>
     <div class="auth-field"><label data-i18n="birth_date">Data urodzenia</label><input class="auth-input" id="setDob" type="date"></div>
@@ -683,6 +708,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
   </div></div>
 </div>
 
+<div class="voice-panel" id="voicePanel"><div class="voice-orb">🎙️</div><div class="voice-status" id="voiceStatus"></div><div class="voice-heard" id="voiceHeard"></div><button class="voice-stop" id="voiceStopBtn">■ Zatrzymaj</button></div>
 <div class="toast" id="toast" style="display:none">✓ Zapisano!</div>
 
 <script type="module">
@@ -1078,6 +1104,208 @@ $('alarmDismiss').onclick=()=>dismissAlarm();
 function dismissAlarm(){alarmActive=false;const b=$('alarmBanner');if(b)b.classList.remove('show');if(lastEventTS)alarmFiredFor=lastEventTS;}
 function fireReminder(nextTS){if(alarmActive)return;alarmActive=true;alarmFiredFor=lastEventTS;const b=$('alarmBanner'),sub=$('alarmSub');if(b){if(sub)sub.textContent=t('alarm_sub')+' · '+fmtTime(nextTS);b.classList.add('show');}haptic([200,100,200,100,200]);if('Notification'in window&&Notification.permission==='granted'){try{const n=new Notification('🍼 '+t('alarm_title'),{body:`${childName()} · ${fmtTime(nextTS)}`,tag:'feed',requireInteraction:true});n.onclick=()=>{window.focus();dismissAlarm();n.close();};}catch(e){}}}
 function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS){return;}if(nativeSchedFor!==(lastEventTS+nextIntervalMs(lastEventTS)))syncNativeReminder();if(alarmFiredFor===lastEventTS)return;const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(Date.now()>=nextTS)fireReminder(nextTS);}
+
+/* ===== ASYSTENT GŁOSOWY (komendy + fraza budząca „Hej BabyPulse”) ===== */
+const VOICE_I18N={
+ pl:{
+  wake:['hej babypulse','hej baby pulse','hej babypuls','ok babypulse','okej babypulse','hej baby'],
+  k_today:['ile zjadl','ile zjadla','ile dzisiaj','ile dzis','podsumowanie','raport','ile mleka'],
+  k_sleep_stop:['obudzil sie','obudzila sie','koniec snu','zakoncz sen','zatrzymaj sen','przestal spac','stop sen','wybudzil'],
+  k_sleep_start:['dodaj sen','rozpocznij sen','zasnal','zasnela','idzie spac','poszedl spac','start snu','wlacz sen','spanie'],
+  k_feed:['dodaj karmienie','zapisz karmienie','nowe karmienie','karmienie','butelka','nakarmilem','nakarmilam'],
+  k_yes:['tak','zgadza','potwierdzam','dobrze','okej','ok','zapisz','jasne','pewnie'],
+  how_help:'Słucham. Co mam zrobić?',
+  ask_amount:'Ile zjadł? Możesz dodać kiedy, na przykład: sto pięćdziesiąt, godzinę temu.',
+  no_amount:'Nie zrozumiałem ilości. Spróbujmy ponownie.',
+  not_heard:'Nic nie usłyszałem.',
+  cancelled:'Anulowano.',
+  save_err:'Nie udało się zapisać.',
+  sleep_started:'Włączyłem licznik snu.',
+  sleep_stopped:'Zatrzymałem licznik snu.',
+  already_sleeping:'Licznik snu już działa.',
+  not_sleeping:'Licznik snu nie jest teraz włączony.',
+  thinking:'Już sprawdzam…',
+  no_ai:'Nie mogę teraz połączyć się z asystentem AI.',
+  no_answer:'Nie mam teraz odpowiedzi.',
+  err:'Wystąpił błąd. Spróbuj ponownie.',
+  not_supported:'Ta przeglądarka nie obsługuje rozpoznawania mowy.',
+  mic_denied:'Brak dostępu do mikrofonu. Zezwól na mikrofon w ustawieniach.',
+  wake_on:'🎙️ Powiedz „Hej BabyPulse”, aby zacząć.',
+  wake_off:'🎙️ Asystent głosowy wyłączony.',
+  head:'🎙️ Asystent głosowy',
+  toggle_txt:'Tryb „Hej BabyPulse”',
+  toggle_sub:'Nasłuch frazy budzącej, gdy aplikacja jest otwarta. Powiedz np.: „dodaj karmienie”, „dodaj sen”, „ile zjadł dzisiaj”.',
+  mic_title:'Powiedz komendę',
+  stop:'■ Zatrzymaj',
+  confirm_feed:(ml,tm)=>`Zapisać ${ml} mililitrów o godzinie ${tm}? Powiedz tak albo nie.`,
+  saved_feed:(ml,tm)=>`Gotowe. Zapisałem ${ml} mililitrów o ${tm}.`,
+  today_report:(n,ml,c,h,m)=>`${n} zjadł dziś ${ml} mililitrów w ${c} karmieniach. Sen: ${h} godzin ${m} minut.`
+ },
+ en:{
+  wake:['hey babypulse','hey baby pulse','ok babypulse','okay babypulse','hey baby'],
+  k_today:['how much today','today total','summary','report','how much milk','how much did'],
+  k_sleep_stop:['stop sleep','end sleep','woke up','wake up','finish sleep','stopped sleeping'],
+  k_sleep_start:['start sleep','add sleep','fell asleep','sleeping now','begin sleep','went to sleep','start nap'],
+  k_feed:['add feeding','add feed','log feeding','new feeding','feeding','bottle','record feed'],
+  k_yes:['yes','yeah','confirm','correct','sure','okay','ok','save','yep'],
+  how_help:'I am listening. What should I do?',
+  ask_amount:'How much did the baby eat? You can add when, for example: one hundred fifty, an hour ago.',
+  no_amount:'I did not catch the amount. Let us try again.',
+  not_heard:'I did not hear anything.',
+  cancelled:'Cancelled.',
+  save_err:'Could not save.',
+  sleep_started:'Sleep timer started.',
+  sleep_stopped:'Sleep timer stopped.',
+  already_sleeping:'The sleep timer is already running.',
+  not_sleeping:'The sleep timer is not running.',
+  thinking:'Let me check…',
+  no_ai:'I cannot reach the AI assistant right now.',
+  no_answer:'I have no answer right now.',
+  err:'Something went wrong. Try again.',
+  not_supported:'This browser does not support speech recognition.',
+  mic_denied:'No microphone access. Please allow the microphone in settings.',
+  wake_on:'🎙️ Say "Hey BabyPulse" to start.',
+  wake_off:'🎙️ Voice assistant off.',
+  head:'🎙️ Voice assistant',
+  toggle_txt:'"Hey BabyPulse" mode',
+  toggle_sub:'Listens for the wake phrase while the app is open. Say e.g.: "add feeding", "start sleep", "how much today".',
+  mic_title:'Say a command',
+  stop:'■ Stop',
+  confirm_feed:(ml,tm)=>`Save ${ml} milliliters at ${tm}? Say yes or no.`,
+  saved_feed:(ml,tm)=>`Done. Saved ${ml} milliliters at ${tm}.`,
+  today_report:(n,ml,c,h,m)=>`${n} had ${ml} milliliters today in ${c} feeds. Sleep: ${h} hours ${m} minutes.`
+ },
+ de:{
+  wake:['hey babypulse','hallo babypulse','ok babypulse','hey baby'],
+  k_today:['wie viel heute','zusammenfassung','bericht','wie viel milch','heute gesamt'],
+  k_sleep_stop:['schlaf stoppen','schlaf beenden','aufgewacht','wach auf'],
+  k_sleep_start:['schlaf starten','schlaf hinzufugen','eingeschlafen','schlaft jetzt','schlaf beginnen','schlafchen'],
+  k_feed:['mahlzeit hinzufugen','futterung hinzufugen','neue mahlzeit','mahlzeit','flasche','gefuttert'],
+  k_yes:['ja','genau','bestatige','richtig','klar','okay','ok','speichern'],
+  how_help:'Ich höre zu. Was soll ich tun?',
+  ask_amount:'Wie viel hat das Baby getrunken? Du kannst sagen wann, zum Beispiel: hundertfünfzig, vor einer Stunde.',
+  no_amount:'Ich habe die Menge nicht verstanden. Versuchen wir es erneut.',
+  not_heard:'Ich habe nichts gehört.',
+  cancelled:'Abgebrochen.',
+  save_err:'Konnte nicht speichern.',
+  sleep_started:'Schlaftimer gestartet.',
+  sleep_stopped:'Schlaftimer gestoppt.',
+  already_sleeping:'Der Schlaftimer läuft bereits.',
+  not_sleeping:'Der Schlaftimer läuft nicht.',
+  thinking:'Ich prüfe das…',
+  no_ai:'Ich erreiche den KI-Assistenten gerade nicht.',
+  no_answer:'Ich habe gerade keine Antwort.',
+  err:'Etwas ist schiefgelaufen. Versuche es erneut.',
+  not_supported:'Dieser Browser unterstützt keine Spracherkennung.',
+  mic_denied:'Kein Mikrofonzugriff. Bitte erlaube das Mikrofon in den Einstellungen.',
+  wake_on:'🎙️ Sage "Hey BabyPulse", um zu starten.',
+  wake_off:'🎙️ Sprachassistent aus.',
+  head:'🎙️ Sprachassistent',
+  toggle_txt:'"Hey BabyPulse"-Modus',
+  toggle_sub:'Hört auf das Weckwort, solange die App offen ist. Sage z. B.: "Mahlzeit hinzufügen", "Schlaf starten", "wie viel heute".',
+  mic_title:'Sprich einen Befehl',
+  stop:'■ Stopp',
+  confirm_feed:(ml,tm)=>`${ml} Milliliter um ${tm} speichern? Sage ja oder nein.`,
+  saved_feed:(ml,tm)=>`Fertig. ${ml} Milliliter um ${tm} gespeichert.`,
+  today_report:(n,ml,c,h,m)=>`${n} hat heute ${ml} Milliliter in ${c} Mahlzeiten getrunken. Schlaf: ${h} Stunden ${m} Minuten.`
+ },
+ fr:{
+  wake:['hey babypulse','salut babypulse','ok babypulse','hey baby'],
+  k_today:['combien aujourd','resume','rapport','combien de lait','total du jour'],
+  k_sleep_stop:['arreter le sommeil','fin du sommeil','reveille','reveil'],
+  k_sleep_start:['demarrer le sommeil','ajouter sommeil','endormi','dort maintenant','commencer sommeil','sieste'],
+  k_feed:['ajouter un repas','ajouter repas','nouveau repas','repas','biberon'],
+  k_yes:['oui','exact','confirme','correct','bien sur','okay','ok','enregistre'],
+  how_help:"Je vous écoute. Que dois-je faire ?",
+  ask_amount:"Combien le bébé a-t-il bu ? Vous pouvez dire quand, par exemple : cent cinquante, il y a une heure.",
+  no_amount:"Je n'ai pas compris la quantité. Réessayons.",
+  not_heard:"Je n'ai rien entendu.",
+  cancelled:"Annulé.",
+  save_err:"Impossible d'enregistrer.",
+  sleep_started:"Minuteur de sommeil démarré.",
+  sleep_stopped:"Minuteur de sommeil arrêté.",
+  already_sleeping:"Le minuteur de sommeil est déjà en cours.",
+  not_sleeping:"Le minuteur de sommeil n'est pas en cours.",
+  thinking:"Je vérifie…",
+  no_ai:"Je ne peux pas joindre l'assistant IA pour le moment.",
+  no_answer:"Je n'ai pas de réponse pour le moment.",
+  err:"Une erreur est survenue. Réessayez.",
+  not_supported:"Ce navigateur ne prend pas en charge la reconnaissance vocale.",
+  mic_denied:"Pas d'accès au micro. Autorisez le microphone dans les réglages.",
+  wake_on:'🎙️ Dites "Hey BabyPulse" pour commencer.',
+  wake_off:"🎙️ Assistant vocal désactivé.",
+  head:"🎙️ Assistant vocal",
+  toggle_txt:'Mode "Hey BabyPulse"',
+  toggle_sub:'Écoute la phrase de réveil quand l\'app est ouverte. Dites par ex. : "ajouter un repas", "démarrer le sommeil", "combien aujourd\'hui".',
+  mic_title:"Dites une commande",
+  stop:"■ Arrêter",
+  confirm_feed:(ml,tm)=>`Enregistrer ${ml} millilitres à ${tm} ? Dites oui ou non.`,
+  saved_feed:(ml,tm)=>`C'est fait. ${ml} millilitres enregistrés à ${tm}.`,
+  today_report:(n,ml,c,h,m)=>`${n} a bu ${ml} millilitres aujourd'hui en ${c} repas. Sommeil : ${h} heures ${m} minutes.`
+ },
+ it:{
+  wake:['hey babypulse','ciao babypulse','ok babypulse','hey baby'],
+  k_today:['quanto oggi','riepilogo','rapporto','quanto latte','totale di oggi'],
+  k_sleep_stop:['ferma il sonno','fine del sonno','svegliato','sveglia'],
+  k_sleep_start:['avvia il sonno','aggiungi sonno','addormentato','dorme ora','inizia sonno','sonnellino'],
+  k_feed:['aggiungi poppata','aggiungi pasto','nuova poppata','poppata','biberon'],
+  k_yes:['si','esatto','confermo','corretto','certo','okay','ok','salva'],
+  how_help:"Ti ascolto. Cosa devo fare?",
+  ask_amount:"Quanto ha mangiato? Puoi dire quando, ad esempio: centocinquanta, un'ora fa.",
+  no_amount:"Non ho capito la quantità. Riproviamo.",
+  not_heard:"Non ho sentito nulla.",
+  cancelled:"Annullato.",
+  save_err:"Impossibile salvare.",
+  sleep_started:"Timer del sonno avviato.",
+  sleep_stopped:"Timer del sonno fermato.",
+  already_sleeping:"Il timer del sonno è già attivo.",
+  not_sleeping:"Il timer del sonno non è attivo.",
+  thinking:"Sto controllando…",
+  no_ai:"Non riesco a contattare l'assistente IA al momento.",
+  no_answer:"Non ho una risposta al momento.",
+  err:"Si è verificato un errore. Riprova.",
+  not_supported:"Questo browser non supporta il riconoscimento vocale.",
+  mic_denied:"Nessun accesso al microfono. Consenti il microfono nelle impostazioni.",
+  wake_on:'🎙️ Di\' "Hey BabyPulse" per iniziare.',
+  wake_off:"🎙️ Assistente vocale disattivato.",
+  head:"🎙️ Assistente vocale",
+  toggle_txt:'Modalità "Hey BabyPulse"',
+  toggle_sub:'Ascolta la frase di attivazione quando l\'app è aperta. Di\' ad es.: "aggiungi poppata", "avvia il sonno", "quanto oggi".',
+  mic_title:"Pronuncia un comando",
+  stop:"■ Ferma",
+  confirm_feed:(ml,tm)=>`Salvare ${ml} millilitri alle ${tm}? Di sì o no.`,
+  saved_feed:(ml,tm)=>`Fatto. ${ml} millilitri salvati alle ${tm}.`,
+  today_report:(n,ml,c,h,m)=>`${n} ha mangiato ${ml} millilitri oggi in ${c} poppate. Sonno: ${h} ore ${m} minuti.`
+ }
+};
+const SRClass=window.SpeechRecognition||window.webkitSpeechRecognition;
+const voiceSupported=!!SRClass && location.protocol!=='file:';
+let vWakeOn=localStorage.getItem('voiceWake')==='1';
+let vState='idle', vPending=null, vActiveRec=null, vBusy=false, vRestartTimer=null;
+function vt(k){const d=VOICE_I18N[LANG]||VOICE_I18N.en;return (d&&d[k]!=null)?d[k]:(VOICE_I18N.en[k]||k);}
+function vnorm(s){return (s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ').trim();}
+function vHasAny(x,arr){return (arr||[]).some(k=>x.includes(k));}
+function vPanel(show){const p=$('voicePanel');if(p)p.classList.toggle('show',!!show);}
+function vStatusTxt(s){const e=$('voiceStatus');if(e)e.textContent=s||'';}
+function vHeardTxt(s){const e=$('voiceHeard');if(e)e.textContent=s||'';}
+function vMicUI(on){const m=$('voiceMicBtn');if(m)m.classList.toggle('listening',!!on);const f=$('voiceFab');if(f)f.classList.toggle('listening',!!on);}
+function stopRec(){if(vActiveRec){try{vActiveRec.onend=null;vActiveRec.onresult=null;vActiveRec.onerror=null;vActiveRec.stop();}catch(e){}try{vActiveRec.abort();}catch(e){}vActiveRec=null;}vMicUI(false);}
+function speakAsync(text){return new Promise(res=>{vStatusTxt(text);if(!('speechSynthesis'in window)){res();return;}try{window.speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=localeOf();u.rate=1.02;u.pitch=1.05;u.onend=()=>res();u.onerror=()=>res();window.speechSynthesis.speak(u);setTimeout(()=>res(),9000);}catch(e){res();}});}
+function recognizeOnce(timeoutMs){timeoutMs=timeoutMs||8000;return new Promise(resolve=>{if(!voiceSupported){resolve(null);return;}stopRec();let rec;try{rec=new SRClass();}catch(e){resolve(null);return;}vActiveRec=rec;rec.lang=localeOf();rec.continuous=false;rec.interimResults=true;rec.maxAlternatives=1;let done=false,fin='';vHeardTxt('');const finish=v=>{if(done)return;done=true;clearTimeout(to);try{rec.onend=null;rec.onresult=null;rec.onerror=null;rec.stop();}catch(e){}try{rec.abort();}catch(e){}if(vActiveRec===rec)vActiveRec=null;vMicUI(false);resolve(v);};const to=setTimeout(()=>finish(fin.trim()||null),timeoutMs);rec.onresult=e=>{let interim='';fin='';for(let i=0;i<e.results.length;i++){const r=e.results[i];if(r.isFinal)fin+=r[0].transcript;else interim+=r[0].transcript;}vHeardTxt((fin+' '+interim).trim());if(fin.trim())finish(fin.trim());};rec.onerror=ev=>{if(ev&&(ev.error==='not-allowed'||ev.error==='service-not-allowed')){showToast(vt('mic_denied'));}finish(fin.trim()||null);};rec.onend=()=>finish(fin.trim()||null);try{rec.start();vMicUI(true);}catch(e){finish(null);}});}
+function startWakeLoop(){if(!voiceSupported||!vWakeOn||vBusy)return;stopRec();let rec;try{rec=new SRClass();}catch(e){return;}vActiveRec=rec;rec.lang=localeOf();rec.continuous=true;rec.interimResults=true;rec.maxAlternatives=1;rec.onresult=e=>{let txt='';for(let i=e.resultIndex;i<e.results.length;i++)txt+=' '+e.results[i][0].transcript;const x=vnorm(txt);if(/baby\s*pul/.test(x)||vHasAny(x,(VOICE_I18N[LANG]||VOICE_I18N.en).wake)){try{rec.onend=null;rec.stop();}catch(e){}if(vActiveRec===rec)vActiveRec=null;haptic([20,40,20]);runVoiceSession();}};rec.onerror=ev=>{if(ev&&(ev.error==='not-allowed'||ev.error==='service-not-allowed')){vWakeOn=false;localStorage.setItem('voiceWake','0');const tg=$('voiceWakeToggle');if(tg)tg.classList.remove('on');showToast(vt('mic_denied'));}};rec.onend=()=>{if(vActiveRec===rec)vActiveRec=null;if(vWakeOn&&!vBusy){clearTimeout(vRestartTimer);vRestartTimer=setTimeout(startWakeLoop,700);}};try{rec.start();}catch(e){if(vWakeOn&&!vBusy){clearTimeout(vRestartTimer);vRestartTimer=setTimeout(startWakeLoop,1200);}}}
+function stopWakeLoop(){clearTimeout(vRestartTimer);stopRec();}
+function vWordsToNumber(x){const map={zero:0,jeden:1,jedno:1,dwa:2,dwie:2,trzy:3,cztery:4,piec:5,szesc:6,siedem:7,osiem:8,dziewiec:9,dziesiec:10,jedenascie:11,dwanascie:12,trzynascie:13,czternascie:14,pietnascie:15,szesnascie:16,siedemnascie:17,osiemnascie:18,dziewietnascie:19,dwadziescia:20,trzydziesci:30,czterdziesci:40,piecdziesiat:50,szescdziesiat:60,siedemdziesiat:70,osiemdziesiat:80,dziewiecdziesiat:90,sto:100,dwiescie:200,trzysta:300,czterysta:400,piecset:500,szescset:600,siedemset:700,osiemset:800,dziewiecset:900};let sum=0,found=false;x.split(' ').forEach(tok=>{if(map[tok]!=null){sum+=map[tok];found=true;}});return found?sum:null;}
+function vParse(text){const x=vnorm(text);let ml=null;const dig=x.match(/(\d{1,4})/);if(dig)ml=parseInt(dig[1]);else ml=vWordsToNumber(x);let whenTS=Date.now(),m;if(m=x.match(/(?:o|at|um|alle|alla)\s+(\d{1,2})[:.\s](\d{2})/)){const d=new Date();d.setHours(+m[1],+m[2],0,0);if(d.getTime()>Date.now()+60000)d.setDate(d.getDate()-1);whenTS=d.getTime();}else if(m=x.match(/(?:o godzinie|o|at|um)\s+(\d{1,2})(?!\d)/)){const d=new Date();d.setHours(+m[1],0,0,0);if(d.getTime()>Date.now()+60000)d.setDate(d.getDate()-1);whenTS=d.getTime();}else{let mins=0;if(/(pol godziny|pol|half an hour|halbe stunde|demi|mezz)/.test(x))mins+=30;if(/(kwadrans|quarter|viertelstunde|quart)/.test(x))mins+=15;const h=x.match(/(\d+)\s*(?:godzin\w*|h|hour|hours|stunde\w*|heure\w*|ora|ore)/);const mm=x.match(/(\d+)\s*(?:minut\w*|min|minute\w*|minuten|minuti)/);if(h)mins+=parseInt(h[1])*60;if(mm)mins+=parseInt(mm[1]);if(!h&&/(godzin|hour|stunde|heure|ora)/.test(x)&&/(temu|ago|vor|fa|il y a)/.test(x))mins+=60;if(mins>0&&/(temu|ago|vor|fa|il y a)/.test(x))whenTS=Date.now()-mins*60000;}return {ml,whenTS};}
+async function voiceAddFeed(ml,whenTS){ml=Math.max(1,Math.min(990,Math.round(ml)));const d=new Date(whenTS);const time=fmtTime(d.getTime());try{await addDoc(feedCol(),{type:'karmienie',mode:'butelka',ml,time,eventTS:d.getTime(),date:d.toLocaleDateString('pl-PL'),hour:d.getHours()});if(activeSleepStart){const start=activeSleepStart;let endTS=Math.min(Date.now(),d.getTime()-15*60000);if(endTS<start+60000)endTS=start+60000;activeSleepStart=null;if(activeSleepId){try{await deleteDoc(doc(db,'families',familyId,'sleeps',activeSleepId));}catch(e){}activeSleepId=null;}try{await addDoc(sleepCol(),{type:'sen',startTS:start,endTS,durMin:Math.round((endTS-start)/60000),date:new Date(start).toLocaleDateString('pl-PL'),open:false});}catch(e){}refreshSleepBtn();updateSleepUI();}return true;}catch(e){return false;}}
+async function voiceSleep(start){const active=!!activeSleepStart;if(start&&active){await endSession(vt('already_sleeping'));return;}if(!start&&!active){await endSession(vt('not_sleeping'));return;}try{$('sleepBtn').click();}catch(e){}await endSession(start?vt('sleep_started'):vt('sleep_stopped'));}
+async function voiceTodaySummary(){const today=globalData.filter(d=>d.date===todayKey());const sum=today.reduce((s,d)=>s+(d.ml||0),0);const sl=todaySleepMin();await endSession(vt('today_report')(childName(),sum,today.length,Math.floor(sl/60),sl%60));}
+async function voiceConfirmFeed(ml,whenTS){vPending={ml,whenTS};await speakAsync(vt('confirm_feed')(ml,fmtTime(whenTS)));const ans=await recognizeOnce(6000);if(ans&&vHasAny(vnorm(ans),(VOICE_I18N[LANG]||VOICE_I18N.en).k_yes)){const ok=await voiceAddFeed(ml,whenTS);await endSession(ok?vt('saved_feed')(ml,fmtTime(whenTS)):vt('save_err'));}else{await endSession(vt('cancelled'));}}
+async function voiceAskAI(question){if(location.protocol==='file:'||!(window.puter&&puter.ai&&puter.ai.chat)){await endSession(vt('no_ai'));return;}vStatusTxt(vt('thinking'));try{const LANGNAME={pl:'polskim (Polish)',en:'English',de:'Deutsch (German)',fr:'français (French)',it:'italiano (Italian)'}[LANG]||'English';const prompt=`You are a warm, practical baby-care assistant. Reply ONLY in ${LANGNAME}, very concisely (max 3 sentences), plain text for text-to-speech (no markdown, no emojis). Baby data:\n${buildChildContext()}\n\nParent said: ${question}`;const resp=await puter.ai.chat(prompt,{model:'gpt-4o-mini'});let out='';if(typeof resp==='string')out=resp;else if(resp&&resp.message&&resp.message.content)out=Array.isArray(resp.message.content)?resp.message.content.map(c=>c.text||'').join(''):resp.message.content;else if(resp&&resp.toString)out=resp.toString();out=(out||'').trim()||vt('no_answer');await endSession(out);}catch(e){await endSession(vt('no_ai'));}}
+async function routeCommand(text){const x=vnorm(text);const K=VOICE_I18N[LANG]||VOICE_I18N.en;if(vHasAny(x,K.k_today)){await voiceTodaySummary();return;}if(vHasAny(x,K.k_sleep_stop)){await voiceSleep(false);return;}if(vHasAny(x,K.k_sleep_start)){await voiceSleep(true);return;}if(vHasAny(x,K.k_feed)){const pa=vParse(text);if(pa.ml){await voiceConfirmFeed(pa.ml,pa.whenTS);}else{await speakAsync(vt('ask_amount'));const a=await recognizeOnce(8000);if(!a){await endSession(vt('not_heard'));return;}const pa2=vParse(a);if(!pa2.ml){await endSession(vt('no_amount'));return;}await voiceConfirmFeed(pa2.ml,pa2.whenTS);}return;}await voiceAskAI(text);}
+async function endSession(msg){if(msg)await speakAsync(msg);vState='idle';vPending=null;vBusy=false;vMicUI(false);setTimeout(()=>vPanel(false),2600);if(vWakeOn)startWakeLoop();}
+async function runVoiceSession(initialText){if(vBusy)return;vBusy=true;stopWakeLoop();vState='command';vPanel(true);try{let cmd=initialText;if(!cmd){await speakAsync(vt('how_help'));cmd=await recognizeOnce(8000);}if(!cmd){await endSession(vt('not_heard'));return;}vHeardTxt(cmd);await routeCommand(cmd);}catch(e){await endSession(vt('err'));}}
+function applyVoiceI18n(){const set=(id,s)=>{const e=$(id);if(e)e.textContent=s;};set('voiceHead',vt('head'));set('voiceWakeTxt',vt('toggle_txt'));set('voiceWakeSub',vt('toggle_sub'));set('voiceStopBtn',vt('stop'));const mic=$('voiceMicBtn');if(mic)mic.setAttribute('aria-label',vt('mic_title'));}
+if(voiceSupported){applyVoiceI18n();const fab=$('voiceFab');const tg=$('voiceWakeToggle');if(tg){tg.classList.toggle('on',vWakeOn);tg.onclick=()=>{vWakeOn=!vWakeOn;localStorage.setItem('voiceWake',vWakeOn?'1':'0');tg.classList.toggle('on',vWakeOn);if(fab)fab.classList.toggle('wake',vWakeOn);haptic(10);if(vWakeOn){showToast(vt('wake_on'));startWakeLoop();}else{showToast(vt('wake_off'));stopWakeLoop();}};}const startTap=()=>{if(vBusy){return;}haptic(10);stopWakeLoop();runVoiceSession();};const mic=$('voiceMicBtn');if(mic)mic.onclick=startTap;if(fab){fab.classList.toggle('wake',vWakeOn);fab.onclick=startTap;}const stopBtn=$('voiceStopBtn');if(stopBtn)stopBtn.onclick=()=>{try{window.speechSynthesis.cancel();}catch(e){}stopRec();vState='idle';vPending=null;vBusy=false;vPanel(false);if(vWakeOn)startWakeLoop();};document.querySelectorAll('[data-lang]').forEach(o=>o.addEventListener('click',()=>setTimeout(applyVoiceI18n,0)));if(vWakeOn)setTimeout(startWakeLoop,1500);}else{['voiceDivider','voiceHead','voiceSection','voiceFab'].forEach(id=>{const e=$(id);if(e)e.style.display='none';});const mic=$('voiceMicBtn');if(mic)mic.style.display='none';}
 </script>
 <script>
 /* ===== Service Worker (PWA / instalacja, offline) ===== */
