@@ -1,8 +1,8 @@
 {
   "id": "/leon/",
-  "name": "Dziennik Malucha",
-  "short_name": "Maluch",
-  "description": "Dziennik karmienia, snu i rozwoju dziecka z asystentem AI.",
+  "name": "BabyPulse",
+  "short_name": "BabyPulse",
+  "description": "Baby feeding, sleep and growth tracker with an AI assistant.",
   "lang": "pl",
   "dir": "ltr",
   "categories": ["health", "lifestyle", "parenting"],
@@ -16,9 +16,20 @@
   "launch_handler": { "client_mode": "navigate-existing" },
   "handle_links": "preferred",
   "edge_side_panel": { "preferred_width": 420 },
-  "scope_extensions": [],
   "prefer_related_applications": false,
   "related_applications": [],
+  "share_target": {
+    "action": "index.html",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "protocol_handlers": [
+    { "protocol": "web+babypulse", "url": "index.html?bp=%s" }
+  ],
   "screenshots": [
     { "src": "Apka1.jpg", "sizes": "657x923", "type": "image/jpeg", "form_factor": "narrow", "label": "Pulpit karmienia" },
     { "src": "Apka2.jpg", "sizes": "657x922", "type": "image/jpeg", "form_factor": "narrow", "label": "Sen i drzemki" },

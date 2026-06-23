@@ -1,5 +1,5 @@
-// Service Worker — Dziennik Malucha (PWA)
-const CACHE = 'dziennik-malucha-v1';
+// Service Worker — BabyPulse (PWA)
+const CACHE = 'babypulse-v3';
 const SHELL = [
   './',
   './index.html',
