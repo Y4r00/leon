@@ -1,0 +1,101 @@
+============================================================
+ BABYPULSE — MATERIAŁY DO GOOGLE PLAY (kopiuj-wklej)
+============================================================
+
+PACKAGE ID: pl.dziennikmalucha.app
+KATEGORIA: Zdrowie i fitness (ewentualnie: Rodzicielstwo)
+E-MAIL KONTAKTOWY: jaroslaw1980@gmail.com
+POLITYKA PRYWATNOŚCI (URL): https://y4r00.github.io/leon/privacy.html
+  (wersja EN: https://y4r00.github.io/leon/privacy-en.html)
+FEATURE GRAPHIC: feature-graphic.png (1024x500)
+IKONA: icon-512.png (512x512)
+SCREENSHOTY: Apka1.jpg ... Apka4.jpg
+
+------------------------------------------------------------
+ POLSKI (pl-PL)
+------------------------------------------------------------
+
+KRÓTKI OPIS (max 80 znaków):
+Dziennik karmienia, snu i rozwoju dziecka z asystentem AI.
+
+PEŁNY OPIS:
+BabyPulse to nowoczesny dziennik dla rodziców — pomaga śledzić karmienia,
+sen i rozwój dziecka w jednym, prostym miejscu.
+
+🍼 KARMIENIE
+• Szybkie dodawanie karmień (ilość mleka + godzina)
+• Licznik czasu od ostatniego karmienia
+• Prognoza następnego karmienia na podstawie rytmu dziecka
+• Historia i edycja wpisów
+
+💤 SEN
+• Licznik snu na żywo (start/stop)
+• Sugerowane okna aktywności i drzemek dobrane do wieku
+• Cel snu wg wieku i historia
+
+📊 PODSUMOWANIE I ANALIZA
+• Cel dnia, porównanie dzień/noc, trend 7 dni
+• Heatmapa godzinowa, wykresy dzienne/tygodniowe/miesięczne
+
+🤖 ASYSTENT AI
+• Analiza rytmu, apetytu i snu
+• Czat AI — zadaj dowolne pytanie o dziecko
+
+👪 DLA OBOJGA RODZICÓW
+• Wspólny dziennik — drugi rodzic dołącza kodem zaproszenia
+• Dane bezpiecznie w chmurze, dostępne na każdym urządzeniu
+
+🌐 5 JĘZYKÓW: polski, angielski, niemiecki, francuski, włoski
+🎨 Motyw jasny i ciemny
+🔔 Przypomnienia o zbliżającym się karmieniu
+
+⚕️ Aplikacja ma charakter informacyjny i nie zastępuje porady pediatry.
+
+------------------------------------------------------------
+ ENGLISH (en-US / en-GB)
+------------------------------------------------------------
+
+SHORT DESCRIPTION (max 80 chars):
+Baby feeding, sleep and growth tracker with an AI assistant.
+
+FULL DESCRIPTION:
+BabyPulse is a modern diary for parents — track your baby’s feeding,
+sleep and growth in one simple place.
+
+🍼 FEEDING
+• Quickly log feeds (milk amount + time)
+• Live timer since the last feed
+• Forecast of the next feed based on your baby’s rhythm
+• History and entry editing
+
+💤 SLEEP
+• Live sleep timer (start/stop)
+• Suggested wake and nap windows matched to age
+• Age-based sleep goal and history
+
+📊 SUMMARY & ANALYSIS
+• Daily goal, day/night comparison, 7-day trend
+• Hourly heatmap, daily/weekly/monthly charts
+
+🤖 AI ASSISTANT
+• Analysis of rhythm, appetite and sleep
+• AI chat — ask anything about your baby
+
+👪 FOR BOTH PARENTS
+• Shared diary — the other parent joins with an invite code
+• Data securely in the cloud, available on every device
+
+🌐 5 LANGUAGES: Polish, English, German, French, Italian
+🎨 Light and dark theme
+🔔 Reminders for the upcoming feed
+
+⚕️ The app is informational and does not replace a pediatrician’s advice.
+
+------------------------------------------------------------
+ UWAGI
+------------------------------------------------------------
+• Target audience: dorośli (18+) / „nie skierowana do dzieci”.
+• Data safety: zbierane e-mail, dane logowania, dane wprowadzone
+  przez użytkownika (imię dziecka, karmienia, sen). Szyfrowane w tranzycie.
+  Możliwość usunięcia danych: tak (przez e-mail kontaktowy).
+• Ads: brak.
