@@ -281,6 +281,21 @@ body.app-ready{padding-bottom:calc(82px + var(--safe-bottom))}
 .voice-fab:active{transform:scale(.9)}
 .voice-fab.wake{box-shadow:0 8px 22px rgba(127,79,196,.5),0 0 0 3px rgba(79,255,176,.6)}
 .voice-fab.listening{background:linear-gradient(135deg,#ff5b7f,#b57bff);animation:vmic 1.1s infinite}
+.tpick-back{position:fixed;inset:0;z-index:10000;background:rgba(3,7,16,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px}
+.tpick-back.show{display:flex}
+.tpick{width:100%;max-width:300px;background:var(--card,#0f1830);border:1px solid var(--gb);border-radius:22px;padding:18px 16px 16px;box-shadow:0 16px 48px rgba(0,0,0,.55)}
+.tpick-title{text-align:center;font-size:.82rem;font-weight:800;color:var(--text);margin-bottom:16px}
+.tpick-cols{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px}
+.tpick-col{display:flex;flex-direction:column;align-items:center;gap:8px}
+.tpick-arr{width:72px;height:42px;border:1px solid var(--gb);border-radius:12px;background:rgba(255,255,255,.06);color:var(--accent2);font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none}
+.tpick-arr:active{background:var(--accent);color:#fff}
+.tpick-val{font-size:2.4rem;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;min-width:72px;text-align:center}
+.tpick-sep{font-size:2rem;font-weight:900;color:var(--text2)}
+.tpick-actions{display:flex;gap:8px}
+.tpick-btn{flex:1;min-width:0;padding:11px 4px;border-radius:12px;font-size:.76rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;border:1px solid var(--gb)}
+.tpick-btn.now{background:rgba(79,255,176,.14);border-color:rgba(79,255,176,.35);color:var(--green)}
+.tpick-btn.cancel{background:rgba(255,255,255,.06);color:var(--text2)}
+.tpick-btn.ok{background:linear-gradient(135deg,var(--accent),#2a7ed4);border-color:transparent;color:#fff}
 /* ===== CHARTS / TREND / HEATMAP ===== */
 .chart-tabs{display:flex;gap:4px;background:rgba(0,0,0,.3);border-radius:12px;padding:3px;width:100%;margin-bottom:10px}
 .ctab{font-size:.63rem;font-weight:700;padding:8px 0;border-radius:9px;border:none;background:transparent;color:var(--text3);cursor:pointer;transition:all .2s;flex:1;font-family:'Inter',sans-serif;min-height:36px}
@@ -311,8 +326,9 @@ body.app-ready{padding-bottom:calc(82px + var(--safe-bottom))}
 .trip-title{font-size:.62rem;font-weight:700;color:var(--purple);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
 .trip-row{display:flex;gap:10px;align-items:center;margin-bottom:10px}
 .trip-label{font-size:.65rem;color:var(--text3);font-weight:600;white-space:nowrap;min-width:70px}
-input[type="time"],input[type="date"]{flex:1;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;color:var(--text);font-size:1rem;font-weight:700;font-family:'Inter',sans-serif;outline:none;text-align:center;min-height:44px}
+input[type="time"],input[type="date"],.tinput{flex:1;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;color:var(--text);font-size:1rem;font-weight:700;font-family:'Inter',sans-serif;outline:none;text-align:center;min-height:44px}
 input[type="time"]:focus,input[type="date"]:focus{border-color:var(--purple)}
+.tinput{cursor:pointer;caret-color:transparent}
 .trip-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--purple),#7f4fc4);border:none;border-radius:14px;color:#fff;font-size:.95rem;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;transition:all .2s;margin-top:4px;min-height:48px}
 .trip-btn:active{transform:scale(.98)}
 .trip-result{margin-top:14px;display:none}
@@ -401,8 +417,8 @@ input[type="range"]:active::-webkit-slider-thumb{transform:scale(1.25)}
 .pbtn{flex:1;padding:10px 2px;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:10px;color:var(--text2);font-size:.66rem;font-weight:700;cursor:pointer;transition:all .2s;font-family:'Inter',sans-serif;min-height:40px}
 .pbtn.sel{background:rgba(255,179,71,.15);border-color:var(--gold);color:var(--gold)}
 .time-row{display:flex;gap:10px;align-items:center;margin-bottom:14px}
-.time-row input[type="time"]{flex:1;min-width:0;max-width:100%;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;color:var(--text);font-size:.92rem;font-weight:700;font-family:'Inter',sans-serif;outline:none;color-scheme:dark;min-height:46px}
-body.light .time-row input[type="time"]{background:#fff;color-scheme:light}
+.time-row input[type="time"],.time-row .tinput{flex:1;min-width:0;max-width:100%;background:rgba(0,0,0,.3);border:1px solid var(--gb);border-radius:12px;padding:11px 12px;color:var(--text);font-size:.92rem;font-weight:700;font-family:'Inter',sans-serif;outline:none;color-scheme:dark;min-height:46px}
+body.light .time-row input[type="time"],body.light .time-row .tinput{background:#fff;color-scheme:light}
 .time-label{font-size:.63rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.08em;white-space:nowrap}
 input[type="time"].auth-input,input[type="number"].auth-input{color-scheme:dark}
 body.light input[type="time"].auth-input,body.light input[type="number"].auth-input{color-scheme:light}
@@ -537,7 +553,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
 <div style="text-align:center"><div class="ml-big" id="mlVal">120</div><div class="ml-unit">ml</div></div></div>
 <div class="presets"><button class="pbtn" data-ml="60">60</button><button class="pbtn" data-ml="90">90</button><button class="pbtn sel" data-ml="120">120</button><button class="pbtn" data-ml="150">150</button><button class="pbtn" data-ml="180">180</button></div>
 <div class="slider-wrap"><input type="range" id="mlRange" min="0" max="330" step="10" value="120" aria-label="Ilość mleka"><div class="smarks"><span>0</span><span>80</span><span>160</span><span>240</span><span>330ml</span></div></div>
-<div class="time-row"><span class="time-label" data-i18n="hour">Godzina</span><input type="time" id="timeInput"></div>
+<div class="time-row"><span class="time-label" data-i18n="hour">Godzina</span><input type="text" inputmode="none" readonly class="tinput" id="timeInput"></div>
 <button class="save-btn" id="saveFeedBtn" data-i18n="save_feeding">🍼 Zapisz karmienie</button></div>
 <div class="sec" style="margin-top:16px"><span class="sec-emo">📋</span><span data-i18n="feed_history">Historia karmień</span></div>
 <div class="hlist" id="historyFeed"></div>
@@ -572,7 +588,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
 <div class="timeline-card"><div class="tl-header"><span class="tl-title" data-i18n="timeline_today">Dzisiaj · harmonogram</span><span class="tl-date" id="tlDate">--</span></div><div class="timeline" id="timeline"><div class="tl-line"></div><div class="empty"><div class="emo">⏳</div></div></div></div>
 <div class="sec"><span class="sec-emo">🧳</span><span data-i18n="trip_sec">Planer wyjścia</span></div>
 <div class="sec-hint" data-i18n="trip_hint">Podaj godziny wyjścia i powrotu — policzę, ile butelek i o której godzinie zabrać.</div>
-<div class="trip-card"><div class="trip-title" data-i18n="trip_title">🧳 Kalkulator na wyjście</div><div class="trip-row"><span class="trip-label" data-i18n="trip_out">Wyjście o</span><input type="time" id="tripStart"></div><div class="trip-row"><span class="trip-label" data-i18n="trip_back">Powrót o</span><input type="time" id="tripEnd"></div><button class="trip-btn" id="tripBtn" data-i18n="trip_calc">Oblicz 🍼</button><div class="trip-result" id="tripResult"><div class="trip-res-title" data-i18n="trip_res_title">Butelki do zabrania:</div><div class="trip-bottles" id="tripBottles"></div></div></div>
+<div class="trip-card"><div class="trip-title" data-i18n="trip_title">🧳 Kalkulator na wyjście</div><div class="trip-row"><span class="trip-label" data-i18n="trip_out">Wyjście o</span><input type="text" inputmode="none" readonly class="tinput" id="tripStart"></div><div class="trip-row"><span class="trip-label" data-i18n="trip_back">Powrót o</span><input type="text" inputmode="none" readonly class="tinput" id="tripEnd"></div><button class="trip-btn" id="tripBtn" data-i18n="trip_calc">Oblicz 🍼</button><div class="trip-result" id="tripResult"><div class="trip-res-title" data-i18n="trip_res_title">Butelki do zabrania:</div><div class="trip-bottles" id="tripBottles"></div></div></div>
 <div class="sec"><span class="sec-emo">⏱️</span><span data-i18n="gaps_sec">Przerwy między karmieniami</span></div>
 <div class="sec-hint" data-i18n="gaps_hint">Odstępy czasu między kolejnymi karmieniami z ostatnich godzin (przewiń w bok).</div>
 <div class="ivscroll" id="ivScroll"><div class="empty" style="padding:8px 0;min-width:160px" data-i18n="no_data">Brak danych</div></div>
@@ -669,11 +685,11 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
   <div class="modal hidden" id="modal-edit"><div class="modal-grip"></div><div class="modal-head"><span class="modal-emo">✏️</span><span class="modal-title" id="editTitle">Edytuj</span><button class="modal-close">✕</button></div><div class="modal-body" style="padding:18px 16px">
     <div id="editFeedBox" class="hidden">
       <div class="auth-field"><label id="editMlLbl">ml</label><input class="auth-input" id="editMl" type="number" min="0" max="500" step="5"></div>
-      <div class="auth-field"><label id="editTimeLbl">Godzina</label><input class="auth-input" id="editTime" type="time"></div>
+      <div class="auth-field"><label id="editTimeLbl">Godzina</label><input class="auth-input tinput" id="editTime" type="text" inputmode="none" readonly></div>
     </div>
     <div id="editSleepBox" class="hidden">
-      <div class="auth-field"><label id="editStartLbl">Start</label><input class="auth-input" id="editStart" type="time"></div>
-      <div class="auth-field"><label id="editEndLbl">Koniec</label><input class="auth-input" id="editEnd" type="time"></div>
+      <div class="auth-field"><label id="editStartLbl">Start</label><input class="auth-input tinput" id="editStart" type="text" inputmode="none" readonly></div>
+      <div class="auth-field"><label id="editEndLbl">Koniec</label><input class="auth-input tinput" id="editEnd" type="text" inputmode="none" readonly></div>
     </div>
     <button class="auth-btn primary" id="editSaveBtn" style="margin-bottom:10px">💾</button>
     <button class="auth-btn" id="editDelBtn" style="background:rgba(255,107,107,.14);border:1px solid rgba(255,107,107,.35);color:#ffb3b3">🗑️</button>
@@ -712,6 +728,7 @@ window.addEventListener('unhandledrejection',function(ev){var b=document.getElem
   </div></div>
 </div>
 
+<div class="tpick-back" id="tpickBack"><div class="tpick"><div class="tpick-title" id="tpickTitle">Ustaw godzinę</div><div class="tpick-cols"><div class="tpick-col"><button class="tpick-arr" data-tp="h+" aria-label="+">▲</button><div class="tpick-val" id="tpHour">12</div><button class="tpick-arr" data-tp="h-" aria-label="-">▼</button></div><div class="tpick-sep">:</div><div class="tpick-col"><button class="tpick-arr" data-tp="m+" aria-label="+">▲</button><div class="tpick-val" id="tpMin">00</div><button class="tpick-arr" data-tp="m-" aria-label="-">▼</button></div></div><div class="tpick-actions"><button class="tpick-btn now" id="tpNow">Teraz</button><button class="tpick-btn cancel" id="tpCancel">Anuluj</button><button class="tpick-btn ok" id="tpOk">Ustaw</button></div></div></div>
 <div class="voice-panel" id="voicePanel"><div class="voice-orb">🎙️</div><div class="voice-status" id="voiceStatus"></div><div class="voice-heard" id="voiceHeard"></div><button class="voice-stop" id="voiceStopBtn">■ Zatrzymaj</button></div>
 <div class="toast" id="toast" style="display:none">✓ Zapisano!</div>
 
@@ -1108,6 +1125,19 @@ $('alarmDismiss').onclick=()=>dismissAlarm();
 function dismissAlarm(){alarmActive=false;const b=$('alarmBanner');if(b)b.classList.remove('show');if(lastEventTS)alarmFiredFor=lastEventTS;}
 function fireReminder(nextTS){if(alarmActive)return;alarmActive=true;alarmFiredFor=lastEventTS;const b=$('alarmBanner'),sub=$('alarmSub');if(b){if(sub)sub.textContent=t('alarm_sub')+' · '+fmtTime(nextTS);b.classList.add('show');}haptic([200,100,200,100,200]);if('Notification'in window&&Notification.permission==='granted'){try{const n=new Notification('🍼 '+t('alarm_title'),{body:`${childName()} · ${fmtTime(nextTS)}`,tag:'feed',requireInteraction:true});n.onclick=()=>{window.focus();dismissAlarm();n.close();};}catch(e){}}}
 function checkReminder(){if(!remindersOn||!avgIntervalMs||!lastEventTS){return;}if(nativeSchedFor!==(lastEventTS+nextIntervalMs(lastEventTS)))syncNativeReminder();if(alarmFiredFor===lastEventTS)return;const nextTS=lastEventTS+nextIntervalMs(lastEventTS);if(Date.now()>=nextTS)fireReminder(nextTS);}
+
+/* ===== Wbudowany wybór godziny (zastępuje natywny picker, by zawsze mieścił się na ekranie) ===== */
+const TPICK_T={pl:{title:'Ustaw godzinę',now:'Teraz',cancel:'Anuluj',ok:'Ustaw'},en:{title:'Set time',now:'Now',cancel:'Cancel',ok:'Set'},de:{title:'Zeit einstellen',now:'Jetzt',cancel:'Abbrechen',ok:'OK'},fr:{title:'Régler l’heure',now:'Maintenant',cancel:'Annuler',ok:'OK'},it:{title:'Imposta ora',now:'Adesso',cancel:'Annulla',ok:'OK'}};
+let tpTarget=null,tpH=12,tpM=0,tpHold=null;
+function tpRender(){const h=$('tpHour'),m=$('tpMin');if(h)h.textContent=pad(tpH);if(m)m.textContent=pad(tpM);}
+function tpOpen(inp){tpTarget=inp;const v=(inp.value||'').match(/^(\d{1,2}):(\d{2})$/);if(v){tpH=Math.min(23,parseInt(v[1]));tpM=Math.min(59,parseInt(v[2]));}else{const n=new Date();tpH=n.getHours();tpM=n.getMinutes();}const T=TPICK_T[LANG]||TPICK_T.en;const st=(id,s)=>{const e=$(id);if(e)e.textContent=s;};st('tpickTitle',T.title);st('tpNow',T.now);st('tpCancel',T.cancel);st('tpOk',T.ok);tpRender();$('tpickBack').classList.add('show');try{inp.blur();}catch(e){}}
+function tpClose(){const b=$('tpickBack');if(b)b.classList.remove('show');tpTarget=null;tpStopHold();}
+function tpAdj(a){if(a==='h+')tpH=(tpH+1)%24;else if(a==='h-')tpH=(tpH+23)%24;else if(a==='m+')tpM=(tpM+1)%60;else if(a==='m-')tpM=(tpM+59)%60;tpRender();haptic(4);}
+function tpStopHold(){if(tpHold){clearInterval(tpHold);tpHold=null;}}
+function tpStartHold(a){tpAdj(a);tpStopHold();tpHold=setInterval(()=>tpAdj(a),130);}
+document.addEventListener('click',e=>{const inp=e.target&&e.target.closest&&e.target.closest('.tinput');if(inp){e.preventDefault();tpOpen(inp);}});
+document.querySelectorAll('#tpickBack .tpick-arr').forEach(b=>{const a=b.dataset.tp;b.addEventListener('pointerdown',ev=>{ev.preventDefault();tpStartHold(a);});['pointerup','pointerleave','pointercancel'].forEach(evn=>b.addEventListener(evn,tpStopHold));});
+(()=>{const n=$('tpNow');if(n)n.onclick=()=>{const d=new Date();tpH=d.getHours();tpM=d.getMinutes();tpRender();haptic(6);};const c=$('tpCancel');if(c)c.onclick=tpClose;const bk=$('tpickBack');if(bk)bk.addEventListener('click',e=>{if(e.target===bk)tpClose();});const ok=$('tpOk');if(ok)ok.onclick=()=>{if(tpTarget){tpTarget.value=pad(tpH)+':'+pad(tpM);tpTarget.dispatchEvent(new Event('input',{bubbles:true}));tpTarget.dispatchEvent(new Event('change',{bubbles:true}));}haptic(8);tpClose();};})();
 
 /* ===== ASYSTENT GŁOSOWY (komendy + fraza budząca „Hej BabyPulse”) ===== */
 const VOICE_I18N={
